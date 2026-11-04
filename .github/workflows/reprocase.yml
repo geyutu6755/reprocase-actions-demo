@@ -43,6 +43,7 @@ jobs:
         with:
           url: http://127.0.0.1:59999/
           fail-on: verified
+          report-name: reprocase-report-honest
       - name: Assert honest failure
         run: |
           code="${{ steps.broken.outputs.exit-code }}"
