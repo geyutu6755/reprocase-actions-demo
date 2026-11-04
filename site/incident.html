@@ -19,14 +19,9 @@
   </header>
   <main>
     <h1>Incident report</h1>
-    <div class="card"><p>This page was deployed with two real defects (for the
-    quality-gate demo): an uncaught error at hydration and a missing asset.</p>
-    <img src="./missing-incident-chart.png" alt="Incident chart" width="180" height="90"></div>
+    <div class="card"><p>Incident fixed: the hydration throw was removed and the chart asset exists.</p>
+    <img src="./assets/incident-chart.svg" alt="Incident chart" width="180" height="90"></div>
   </main>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      throw new Error('IncidentBoom: defect shipped to production (quality-gate demo)');
-    });
-  </script>
+
 </body>
 </html>
