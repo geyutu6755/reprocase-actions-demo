@@ -1,0 +1,164 @@
+{
+  "tool": {
+    "name": "ReproCase",
+    "version": "0.4.0"
+  },
+  "startedAt": "2026-11-04T16:56:46.063Z",
+  "finishedAt": "2026-11-04T16:56:46.690Z",
+  "target": {
+    "entry": "http://127.0.0.1:59999/",
+    "allowedDomains": []
+  },
+  "config": {
+    "entry": "http://127.0.0.1:59999/",
+    "allowedDomains": [],
+    "maxPages": 25,
+    "maxDepth": 3,
+    "maxActionsPerPage": 10,
+    "navigationTimeoutMs": 15000,
+    "runTimeoutMs": 300000,
+    "requestDelayMs": 150,
+    "viewports": {
+      "desktop": {
+        "width": 1280,
+        "height": 720
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    "allowedActions": {
+      "clickLinks": true,
+      "clickButtons": true,
+      "fillForms": false
+    },
+    "exploration": {
+      "allowSelectors": [],
+      "denySelectors": []
+    },
+    "detection": {
+      "windowMs": 1500,
+      "maxWaitMs": 5000
+    },
+    "capture": {
+      "screenshots": true,
+      "traces": false
+    },
+    "verification": {
+      "attempts": 3
+    },
+    "report": {
+      "redactQuery": true
+    }
+  },
+  "stats": {
+    "pagesVisited": 1,
+    "actionsPerformed": 0,
+    "requestsObserved": 1,
+    "linksChecked": 0,
+    "observationTimeouts": 0,
+    "durationMs": 628,
+    "findingsRaw": 1,
+    "findingsAfterDedupe": 1
+  },
+  "findings": [
+    {
+      "id": "fp-d7541970",
+      "fingerprint": "page-load-failure|http://127.0.0.1:59999/|page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:59999/",
+      "type": "page-load-failure",
+      "severity": "high",
+      "status": "verified",
+      "confidence": 1,
+      "title": "Page failed to load (network error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:59999/)",
+      "url": "http://127.0.0.1:59999/",
+      "pages": [
+        "http://127.0.0.1:59999/"
+      ],
+      "evidence": {
+        "failureText": "page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:59999/"
+      },
+      "steps": [],
+      "repro": {
+        "attempts": 3,
+        "successes": 3,
+        "observedCount": 1
+      },
+      "screenshots": [
+        "artifacts/screenshots/page-000.png"
+      ],
+      "traces": [],
+      "plan": {
+        "kind": "goto-status",
+        "url": "http://127.0.0.1:59999/",
+        "message": "page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:59999/"
+      },
+      "firstSeenAt": "2026-11-04T16:56:46.295Z",
+      "lastSeenAt": "2026-11-04T16:56:46.295Z",
+      "stability": "stable",
+      "generatedTest": "generated-tests/reprocase-fp-d7541970-01.spec.ts"
+    }
+  ],
+  "clusters": [],
+  "pages": [
+    {
+      "url": "http://127.0.0.1:59999/",
+      "depth": 0,
+      "actions": 0,
+      "jsErrors": 0,
+      "resourceErrors": 0,
+      "overflow": false,
+      "durationMs": 111,
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:59999/"
+    }
+  ],
+  "exploration": [],
+  "notChecked": [
+    {
+      "area": "Forms and form submission",
+      "reason": "Read-only-first exploration never types into or submits forms, so form flows are not exercised."
+    },
+    {
+      "area": "Authenticated / session-specific pages",
+      "reason": "ReproCase explores without credentials; pages behind logins are out of reach."
+    },
+    {
+      "area": "Third-party resource failures",
+      "reason": "Observed but not reported: failures on hosts outside the allowed domains are excluded on purpose."
+    },
+    {
+      "area": "Visual layout beyond horizontal overflow",
+      "reason": "No pixel comparison or visual regression testing is performed."
+    },
+    {
+      "area": "Accessibility",
+      "reason": "Not audited in this version."
+    },
+    {
+      "area": "Performance",
+      "reason": "No timing budgets are evaluated."
+    },
+    {
+      "area": "Cross-origin iframes and closed shadow roots",
+      "reason": "Not accessible from the scanning context. Same-origin iframes and OPEN shadow roots are explored and reported; everything else is logged in the exploration log."
+    },
+    {
+      "area": "Backend / business logic correctness",
+      "reason": "Only client-observable behaviour is judged. ReproCase never decides whether business outcomes are correct."
+    }
+  ],
+  "entryUnreachable": true,
+  "summary": {
+    "verified": 1,
+    "suspected": 0,
+    "bySeverity": {
+      "critical": 0,
+      "high": 1,
+      "medium": 0,
+      "low": 0
+    },
+    "byType": {
+      "page-load-failure": 1
+    }
+  }
+}

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Integration Demo — Incident</title>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #f6f7f9; color: #1c2333; }
+    header { background: #1c2333; color: #fff; padding: 12px 16px; }
+    nav a { color: #b9c6ff; margin-right: 12px; }
+    main { max-width: 680px; margin: 0 auto; padding: 16px; }
+    .card { background: #fff; border: 1px solid #e2e6f0; border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+    img { max-width: 100%; }
+  </style>
+</head>
+<body>
+  <header>Integration Demo
+    <nav><a href="./index.html">Home</a></nav>
+  </header>
+  <main>
+    <h1>Incident report</h1>
+    <div class="card"><p>This page was deployed with two real defects (for the
+    quality-gate demo): an uncaught error at hydration and a missing asset.</p>
+    <img src="./missing-incident-chart.png" alt="Incident chart" width="180" height="90"></div>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      throw new Error('IncidentBoom: defect shipped to production (quality-gate demo)');
+    });
+  </script>
+</body>
+</html>
