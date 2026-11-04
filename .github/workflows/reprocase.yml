@@ -54,3 +54,22 @@ jobs:
             exit 1
           fi
           echo "scanner-error honesty: OK"
+
+  compare-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Start demo site
+        run: node start-and-wait.mjs
+      # Report-only scan; the NEW-findings gate is what fails this job.
+      - name: ReproCase scan (report only)
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@release/v0.5.0
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          compare-with: baseline/result.json
+          fail-on-new: true
+          max-pages: 10

@@ -1,1 +1,16 @@
 node_modules/
+artifact-extracted/
+artifact-scan/
+incident-logs/
+artifact.zip
+*.json.tmp
+arts.json
+runs.json
+act.json
+jobs*.json
+rerun.json
+scanlog*.txt
+joblog.txt
+site-index.html
+site-about.html
+.reprocase-baseline-README.md
