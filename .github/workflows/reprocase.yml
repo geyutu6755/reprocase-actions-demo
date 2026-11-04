@@ -1,0 +1,55 @@
+name: ReproCase
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Start demo site
+        run: node start-and-wait.mjs
+      - name: ReproCase scan
+        id: reproscan
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@release/v0.5.0
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: verified
+          max-pages: 10
+      - name: Verdict
+        if: always()
+        run: echo "verdict=${{ steps.reproscan.outputs.verdict || 'n/a' }} (exit ${{ steps.reproscan.outputs.exit-code || 'n/a' }})"
+
+  scanner-error-is-honest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: ReproCase scan (unreachable target)
+        id: broken
+        continue-on-error: true
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@release/v0.5.0
+        with:
+          url: http://127.0.0.1:59999/
+          fail-on: verified
+      - name: Assert honest failure
+        run: |
+          code="${{ steps.broken.outputs.exit-code }}"
+          verdict="${{ steps.broken.outputs.verdict }}"
+          echo "exit=$code verdict=$verdict"
+          if [ "$code" != "2" ] || [ "$verdict" != "error" ]; then
+            echo "::error::Scanner did not report the environment error honestly"
+            exit 1
+          fi
+          echo "scanner-error honesty: OK"
