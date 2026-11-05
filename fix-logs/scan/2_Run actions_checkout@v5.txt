@@ -1,0 +1,73 @@
+﻿2026-11-04T17:55:49.3551162Z ##[group]Run actions/checkout@v5
+2026-11-04T17:55:49.3552223Z with:
+2026-11-04T17:55:49.3552967Z   repository: geyutu6755/reprocase-actions-demo
+2026-11-04T17:55:49.3557832Z   token: ***
+2026-11-04T17:55:49.3558442Z   ssh-strict: true
+2026-11-04T17:55:49.3559090Z   ssh-user: git
+2026-11-04T17:55:49.3559775Z   persist-credentials: true
+2026-11-04T17:55:49.3560467Z   clean: true
+2026-11-04T17:55:49.3561106Z   sparse-checkout-cone-mode: true
+2026-11-04T17:55:49.3561806Z   fetch-depth: 1
+2026-11-04T17:55:49.3562521Z   fetch-tags: false
+2026-11-04T17:55:49.3563136Z   show-progress: true
+2026-11-04T17:55:49.3563775Z   lfs: false
+2026-11-04T17:55:49.3564424Z   submodules: false
+2026-11-04T17:55:49.3565055Z   set-safe-directory: true
+2026-11-04T17:55:49.3565796Z   allow-unsafe-pr-checkout: false
+2026-11-04T17:55:49.3566667Z ##[endgroup]
+2026-11-04T17:55:49.5550618Z Syncing repository: geyutu6755/reprocase-actions-demo
+2026-11-04T17:55:49.5554138Z ##[group]Getting Git version info
+2026-11-04T17:55:49.5555945Z Working directory is '/home/runner/work/reprocase-actions-demo/reprocase-actions-demo'
+2026-11-04T17:55:49.5558130Z [command]/usr/bin/git version
+2026-11-04T17:55:49.5614150Z git version 2.56.0
+2026-11-04T17:55:49.5631219Z ##[endgroup]
+2026-11-04T17:55:49.5641223Z Temporarily overriding HOME='/home/runner/work/_temp/7cc85b6d-bdef-46a6-a169-225172646eca' before making global git config changes
+2026-11-04T17:55:49.5644002Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-04T17:55:49.5646679Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/reprocase-actions-demo/reprocase-actions-demo
+2026-11-04T17:55:49.5696468Z Deleting the contents of '/home/runner/work/reprocase-actions-demo/reprocase-actions-demo'
+2026-11-04T17:55:49.5700799Z ##[group]Initializing the repository
+2026-11-04T17:55:49.5704788Z [command]/usr/bin/git init /home/runner/work/reprocase-actions-demo/reprocase-actions-demo
+2026-11-04T17:55:49.5795041Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-04T17:55:49.5796785Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-04T17:55:49.5802288Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-04T17:55:49.5803233Z hint: call:
+2026-11-04T17:55:49.5803856Z hint:
+2026-11-04T17:55:49.5804631Z hint: 	git config --global init.defaultBranch <name>
+2026-11-04T17:55:49.5805425Z hint:
+2026-11-04T17:55:49.5806227Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-04T17:55:49.5807294Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-04T17:55:49.5808196Z hint:
+2026-11-04T17:55:49.5808850Z hint: 	git branch -m <name>
+2026-11-04T17:55:49.5809636Z hint:
+2026-11-04T17:55:49.5810454Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-04T17:55:49.5811747Z Initialized empty Git repository in /home/runner/work/reprocase-actions-demo/reprocase-actions-demo/.git/
+2026-11-04T17:55:49.5823488Z [command]/usr/bin/git remote add origin https://github.com/geyutu6755/reprocase-actions-demo
+2026-11-04T17:55:49.5871022Z ##[endgroup]
+2026-11-04T17:55:49.5872912Z ##[group]Disabling automatic garbage collection
+2026-11-04T17:55:49.5874560Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-04T17:55:49.6307137Z ##[endgroup]
+2026-11-04T17:55:49.6309680Z ##[group]Setting up auth
+2026-11-04T17:55:49.6311069Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-04T17:55:49.6433181Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-04T17:55:49.6731057Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-04T17:55:49.6768846Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-04T17:55:49.6961465Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-04T17:55:49.6999576Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-04T17:55:49.7194046Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-04T17:55:49.7238218Z ##[endgroup]
+2026-11-04T17:55:49.7239297Z ##[group]Fetching the repository
+2026-11-04T17:55:49.7247097Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3acb0ef8c20d3ee458457b915346350a51309b23:refs/remotes/origin/main
+2026-11-04T17:55:50.1552351Z From https://github.com/geyutu6755/reprocase-actions-demo
+2026-11-04T17:55:50.1553053Z  * [new ref]         3acb0ef8c20d3ee458457b915346350a51309b23 -> origin/main
+2026-11-04T17:55:50.1556221Z ##[endgroup]
+2026-11-04T17:55:50.1556493Z ##[group]Determining the checkout info
+2026-11-04T17:55:50.1558440Z ##[endgroup]
+2026-11-04T17:55:50.1563108Z [command]/usr/bin/git sparse-checkout disable
+2026-11-04T17:55:50.1636574Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-04T17:55:50.2025768Z ##[group]Checking out the ref
+2026-11-04T17:55:50.2038562Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-11-04T17:55:50.2314136Z Switched to a new branch 'main'
+2026-11-04T17:55:50.2316569Z branch 'main' set up to track 'origin/main'.
+2026-11-04T17:55:50.2322823Z ##[endgroup]
+2026-11-04T17:55:50.2371668Z [command]/usr/bin/git log -1 --format=%H
+2026-11-04T17:55:50.2404303Z 3acb0ef8c20d3ee458457b915346350a51309b23

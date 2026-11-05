@@ -1,0 +1,285 @@
+﻿2026-11-04T17:55:52.4846867Z ##[group]Run geyutu6755/ReproCase/.github/actions/reprocase-scan@release/v0.5.0
+2026-11-04T17:55:52.4847426Z with:
+2026-11-04T17:55:52.4847728Z   url: http://127.0.0.1:4173/
+2026-11-04T17:55:52.4848037Z   fail-on: never
+2026-11-04T17:55:52.4848332Z   compare-with: baseline/result.json
+2026-11-04T17:55:52.4848659Z   fail-on-new: true
+2026-11-04T17:55:52.4848925Z   max-pages: 10
+2026-11-04T17:55:52.4849211Z   report-name: reprocase-report
+2026-11-04T17:55:52.4849520Z   node-version: 22
+2026-11-04T17:55:52.4849794Z ##[endgroup]
+2026-11-04T17:55:52.4915766Z ##[start-action display=Run actions/setup-node@v5;id=__geyutu6755_ReproCase.__actions_setup-node]
+2026-11-04T17:55:52.5002456Z ##[group]Run actions/setup-node@v5
+2026-11-04T17:55:52.5002818Z with:
+2026-11-04T17:55:52.5003079Z   node-version: 22
+2026-11-04T17:55:52.5003367Z   always-auth: false
+2026-11-04T17:55:52.5003642Z   check-latest: false
+2026-11-04T17:55:52.5006846Z   token: ***
+2026-11-04T17:55:52.5007150Z   package-manager-cache: true
+2026-11-04T17:55:52.5007515Z ##[endgroup]
+2026-11-04T17:55:52.6646108Z Found in cache @ /opt/hostedtoolcache/node/22.23.4/x64
+2026-11-04T17:55:52.6648508Z (node:2388) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-04T17:55:52.6650344Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-04T17:55:52.6652408Z ##[group]Environment details
+2026-11-04T17:55:52.8765945Z node: v22.23.4
+2026-11-04T17:55:52.8767156Z npm: 10.9.9
+2026-11-04T17:55:52.8767956Z yarn: 1.22.22
+2026-11-04T17:55:52.8769367Z ##[endgroup]
+2026-11-04T17:55:52.8885511Z ##[end-action id=__geyutu6755_ReproCase.__actions_setup-node;outcome=success;conclusion=success;duration_ms=396]
+2026-11-04T17:55:52.8895714Z ##[start-action display=Install ReproCase;id=__geyutu6755_ReproCase.__run]
+2026-11-04T17:55:52.8921157Z ##[group]Run set -euo pipefail
+2026-11-04T17:55:52.8921650Z [36;1mset -euo pipefail[0m
+2026-11-04T17:55:52.8922098Z [36;1mREF="${REPROCASE_REF}"[0m
+2026-11-04T17:55:52.8922431Z [36;1mcase "$REF" in[0m
+2026-11-04T17:55:52.8922728Z [36;1m  ''|refs/*) REF="v0.5.0" ;;[0m
+2026-11-04T17:55:52.8923188Z [36;1mesac[0m
+2026-11-04T17:55:52.8923488Z [36;1mSRC="${RUNNER_TEMP}/reprocase-src"[0m
+2026-11-04T17:55:52.8924153Z [36;1mrm -rf "$SRC"[0m
+2026-11-04T17:55:52.8924702Z [36;1mecho "Installing ReproCase from github.com/geyutu6755/ReproCase ($REF)"[0m
+2026-11-04T17:55:52.8925492Z [36;1mgit clone --depth 1 --branch "$REF" https://github.com/geyutu6755/ReproCase.git "$SRC"[0m
+2026-11-04T17:55:52.8926055Z [36;1mcd "$SRC"[0m
+2026-11-04T17:55:52.8926465Z [36;1m# Global installs omit devDependencies, and the TypeScript build needs[0m
+2026-11-04T17:55:52.8927385Z [36;1m# them — so build here (npm ci includes dev deps) and install the[0m
+2026-11-04T17:55:52.8927995Z [36;1m# built package globally.[0m
+2026-11-04T17:55:52.8928353Z [36;1mnpm install --no-fund --no-audit[0m
+2026-11-04T17:55:52.8928691Z [36;1mnpm run build[0m
+2026-11-04T17:55:52.8929156Z [36;1mnpm install -g --no-fund --no-audit .[0m
+2026-11-04T17:55:52.8929578Z [36;1mreprocase --version[0m
+2026-11-04T17:55:52.8953070Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-04T17:55:52.8953485Z env:
+2026-11-04T17:55:52.8954075Z   REPROCASE_REF: release/v0.5.0
+2026-11-04T17:55:52.8954417Z ##[endgroup]
+2026-11-04T17:55:52.9015703Z Installing ReproCase from github.com/geyutu6755/ReproCase (release/v0.5.0)
+2026-11-04T17:55:52.9029863Z Cloning into '/home/runner/work/_temp/reprocase-src'...
+2026-11-04T17:55:55.9067604Z 
+2026-11-04T17:55:55.9068752Z > reprocase@0.4.0 prepare
+2026-11-04T17:55:55.9069316Z > npm run build
+2026-11-04T17:55:55.9069597Z 
+2026-11-04T17:55:56.0098263Z 
+2026-11-04T17:55:56.0099015Z > reprocase@0.4.0 build
+2026-11-04T17:55:56.0099662Z > tsc -p tsconfig.json
+2026-11-04T17:55:56.0099980Z 
+2026-11-04T17:55:57.9422018Z 
+2026-11-04T17:55:57.9422600Z added 45 packages in 4s
+2026-11-04T17:55:58.0880648Z 
+2026-11-04T17:55:58.0881293Z > reprocase@0.4.0 build
+2026-11-04T17:55:58.0882375Z > tsc -p tsconfig.json
+2026-11-04T17:55:58.0882667Z 
+2026-11-04T17:56:02.2245404Z 
+2026-11-04T17:56:02.2246232Z added 1 package in 2s
+2026-11-04T17:56:02.7418855Z 0.4.0
+2026-11-04T17:56:02.7586772Z ##[end-action id=__geyutu6755_ReproCase.__run;outcome=success;conclusion=success;duration_ms=9868]
+2026-11-04T17:56:02.7590516Z ##[start-action display=Install Chromium;id=__geyutu6755_ReproCase.__run_2]
+2026-11-04T17:56:02.7616321Z ##[group]Run set -euo pipefail
+2026-11-04T17:56:02.7616713Z [36;1mset -euo pipefail[0m
+2026-11-04T17:56:02.7617125Z [36;1m# Idempotent: cached installs complete in seconds.[0m
+2026-11-04T17:56:02.7617607Z [36;1mnpx playwright install chromium[0m
+2026-11-04T17:56:02.7641054Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-04T17:56:02.7641522Z ##[endgroup]
+2026-11-04T17:56:03.6343416Z npm warn exec The following package was not found and will be installed: playwright@1.64.1
+2026-11-04T17:56:05.4529645Z ╔═══════════════════════════════════════════════════════════════════════════════╗
+2026-11-04T17:56:05.4531282Z ║ WARNING: It looks like you are running 'npx playwright install' without first ║
+2026-11-04T17:56:05.4532724Z ║ installing your project's dependencies.                                       ║
+2026-11-04T17:56:05.4534210Z ║                                                                               ║
+2026-11-04T17:56:05.4535326Z ║ To avoid unexpected behavior, please install your dependencies first, and     ║
+2026-11-04T17:56:05.4536549Z ║ then run Playwright's install command:                                        ║
+2026-11-04T17:56:05.4537670Z ║                                                                               ║
+2026-11-04T17:56:05.4538793Z ║     npm install                                                               ║
+2026-11-04T17:56:05.4539912Z ║     npx playwright install                                                    ║
+2026-11-04T17:56:05.4540931Z ║                                                                               ║
+2026-11-04T17:56:05.4541898Z ║ If your project does not yet depend on Playwright, first install the          ║
+2026-11-04T17:56:05.4543102Z ║ applicable npm package (most commonly @playwright/test), and                  ║
+2026-11-04T17:56:05.4544839Z ║ then run Playwright's install command to download the browsers:               ║
+2026-11-04T17:56:05.4545944Z ║                                                                               ║
+2026-11-04T17:56:05.4546961Z ║     npm install @playwright/test                                              ║
+2026-11-04T17:56:05.4548075Z ║     npx playwright install                                                    ║
+2026-11-04T17:56:05.4549487Z ║                                                                               ║
+2026-11-04T17:56:05.4550441Z ╚═══════════════════════════════════════════════════════════════════════════════╝
+2026-11-04T17:56:05.4691518Z Downloading Chrome for Testing 156.0.8078.4 (playwright chromium v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-linux64.zip
+2026-11-04T17:56:05.9752610Z |                                                                                |   0% of 191.1 MiB
+2026-11-04T17:56:06.1669247Z |■■■■■■■■                                                                        |  10% of 191.1 MiB
+2026-11-04T17:56:06.3053383Z |■■■■■■■■■■■■■■■■                                                                |  20% of 191.1 MiB
+2026-11-04T17:56:06.4680999Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 191.1 MiB
+2026-11-04T17:56:06.5961540Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 191.1 MiB
+2026-11-04T17:56:06.7135715Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 191.1 MiB
+2026-11-04T17:56:06.8371527Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 191.1 MiB
+2026-11-04T17:56:07.0056988Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 191.1 MiB
+2026-11-04T17:56:07.1321574Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 191.1 MiB
+2026-11-04T17:56:07.2932200Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 191.1 MiB
+2026-11-04T17:56:07.4152433Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 191.1 MiB
+2026-11-04T17:56:10.0877636Z Chrome for Testing 156.0.8078.4 (playwright chromium v1248) downloaded to /home/runner/.cache/ms-playwright/chromium-1248
+2026-11-04T17:56:10.0881980Z Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+2026-11-04T17:56:10.6970197Z |                                                                                |   0% of 2.2 MiB
+2026-11-04T17:56:10.7012896Z |■■■■■■■■                                                                        |  10% of 2.2 MiB
+2026-11-04T17:56:10.7034504Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.2 MiB
+2026-11-04T17:56:10.7049761Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.2 MiB
+2026-11-04T17:56:10.7065056Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.2 MiB
+2026-11-04T17:56:10.7079784Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.2 MiB
+2026-11-04T17:56:10.7091716Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.2 MiB
+2026-11-04T17:56:10.7103413Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.2 MiB
+2026-11-04T17:56:10.7113159Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.2 MiB
+2026-11-04T17:56:10.7125734Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.2 MiB
+2026-11-04T17:56:10.7134658Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.2 MiB
+2026-11-04T17:56:10.7738615Z FFmpeg (playwright ffmpeg v1013) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1013
+2026-11-04T17:56:10.7741926Z Downloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip
+2026-11-04T17:56:11.2237164Z |                                                                                |   0% of 120 MiB
+2026-11-04T17:56:11.3350367Z |■■■■■■■■                                                                        |  10% of 120 MiB
+2026-11-04T17:56:11.3992399Z |■■■■■■■■■■■■■■■■                                                                |  20% of 120 MiB
+2026-11-04T17:56:11.4585145Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 120 MiB
+2026-11-04T17:56:11.5044923Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 120 MiB
+2026-11-04T17:56:11.5462464Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 120 MiB
+2026-11-04T17:56:11.5868292Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 120 MiB
+2026-11-04T17:56:11.6269729Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 120 MiB
+2026-11-04T17:56:11.6701160Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 120 MiB
+2026-11-04T17:56:11.7043556Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 120 MiB
+2026-11-04T17:56:11.7452487Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 120 MiB
+2026-11-04T17:56:13.7443352Z Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1248
+2026-11-04T17:56:13.7950428Z ##[end-action id=__geyutu6755_ReproCase.__run_2;outcome=success;conclusion=success;duration_ms=11035]
+2026-11-04T17:56:13.7956116Z ##[start-action display=Run scan;id=__geyutu6755_ReproCase.scan]
+2026-11-04T17:56:13.7976098Z ##[group]Run set -uo pipefail
+2026-11-04T17:56:13.7976427Z [36;1mset -uo pipefail[0m
+2026-11-04T17:56:13.7976826Z [36;1mARGS=(scan --url "$URL" --out reprocase-report --fail-on "$FAIL_ON" --no-traces)[0m
+2026-11-04T17:56:13.7977303Z [36;1m[ -n "$CONFIG" ] && ARGS+=(--config "$CONFIG")[0m
+2026-11-04T17:56:13.7977670Z [36;1m[ -n "$MAX_PAGES" ] && ARGS+=(--max-pages "$MAX_PAGES")[0m
+2026-11-04T17:56:13.7978326Z [36;1m[ -n "$DETECTION_WINDOW_MS" ] && ARGS+=(--detection-window-ms "$DETECTION_WINDOW_MS")[0m
+2026-11-04T17:56:13.7978752Z [36;1mset +e[0m
+2026-11-04T17:56:13.7978961Z [36;1mreprocase "${ARGS[@]}"[0m
+2026-11-04T17:56:13.7979205Z [36;1mCODE=$?[0m
+2026-11-04T17:56:13.7979398Z [36;1mset -e[0m
+2026-11-04T17:56:13.7979647Z [36;1mecho "exit-code=$CODE" >> "$GITHUB_OUTPUT"[0m
+2026-11-04T17:56:13.7979942Z [36;1mcase "$CODE" in[0m
+2026-11-04T17:56:13.7980155Z [36;1m  0)[0m
+2026-11-04T17:56:13.7980383Z [36;1m    echo "verdict=clean" >> "$GITHUB_OUTPUT"[0m
+2026-11-04T17:56:13.7980821Z [36;1m    echo "ReproCase: scan completed with no findings at or above the threshold."[0m
+2026-11-04T17:56:13.7981226Z [36;1m    ;;[0m
+2026-11-04T17:56:13.7981414Z [36;1m  1)[0m
+2026-11-04T17:56:13.7981645Z [36;1m    echo "verdict=findings" >> "$GITHUB_OUTPUT"[0m
+2026-11-04T17:56:13.7982091Z [36;1m    echo "ReproCase: scan completed — findings exist at or above the threshold."[0m
+2026-11-04T17:56:13.7982511Z [36;1m    ;;[0m
+2026-11-04T17:56:13.7982691Z [36;1m  2)[0m
+2026-11-04T17:56:13.7982911Z [36;1m    echo "verdict=error" >> "$GITHUB_OUTPUT"[0m
+2026-11-04T17:56:13.7983893Z [36;1m    echo "::error::ReproCase could not run properly (exit 2). This is an environment or configuration problem, NOT a verdict about your website. See the log above; 'reprocase doctor' diagnoses most causes."[0m
+2026-11-04T17:56:13.7984874Z [36;1m    ;;[0m
+2026-11-04T17:56:13.7985057Z [36;1m  *)[0m
+2026-11-04T17:56:13.7985286Z [36;1m    echo "verdict=error" >> "$GITHUB_OUTPUT"[0m
+2026-11-04T17:56:13.7985660Z [36;1m    echo "::error::ReproCase exited unexpectedly (code $CODE)."[0m
+2026-11-04T17:56:13.7985998Z [36;1m    ;;[0m
+2026-11-04T17:56:13.7986186Z [36;1mesac[0m
+2026-11-04T17:56:13.7986378Z [36;1mexit "$CODE"[0m
+2026-11-04T17:56:13.8007185Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-04T17:56:13.8007527Z env:
+2026-11-04T17:56:13.8007738Z   URL: http://127.0.0.1:4173/
+2026-11-04T17:56:13.8008014Z   CONFIG: 
+2026-11-04T17:56:13.8008203Z   FAIL_ON: never
+2026-11-04T17:56:13.8008393Z   MAX_PAGES: 10
+2026-11-04T17:56:13.8008590Z   DETECTION_WINDOW_MS: 
+2026-11-04T17:56:13.8008803Z ##[endgroup]
+2026-11-04T17:56:14.3304202Z [scan] entry http://127.0.0.1:4173/ (allowed: localhost)
+2026-11-04T17:56:14.5675624Z [scan] page 1/10: http://127.0.0.1:4173/
+2026-11-04T17:56:17.5015514Z [scan] page 2/10: http://127.0.0.1:4173/index.html
+2026-11-04T17:56:20.3645631Z [scan] page 3/10: http://127.0.0.1:4173/about.html
+2026-11-04T17:56:22.7723231Z [scan] page 4/10: http://127.0.0.1:4173/incident.html
+2026-11-04T17:56:25.3810287Z 
+2026-11-04T17:56:25.3811319Z ReproCase v0.4.0 — scan finished in 11s
+2026-11-04T17:56:25.3812051Z Target: http://127.0.0.1:4173/
+2026-11-04T17:56:25.3812974Z Checked 4 page(s), 2 interaction(s), 3 link(s); 0 observations -> 0 deduplicated finding(s).
+2026-11-04T17:56:25.3813556Z 
+2026-11-04T17:56:25.3814230Z No findings. No verified or suspected faults were detected.
+2026-11-04T17:56:25.3814708Z 
+2026-11-04T17:56:25.3815035Z HTML report:        reprocase-report/report.html
+2026-11-04T17:56:25.3815668Z Machine-readable:   reprocase-report/result.json
+2026-11-04T17:56:25.3816398Z GitHub issue text:  reprocase-report/issues.md
+2026-11-04T17:56:25.3817080Z Generated tests:    reprocase-report/generated-tests
+2026-11-04T17:56:25.3817535Z 
+2026-11-04T17:56:25.4010024Z ReproCase: scan completed with no findings at or above the threshold.
+2026-11-04T17:56:25.4037544Z ##[end-action id=__geyutu6755_ReproCase.scan;outcome=success;conclusion=success;duration_ms=11608]
+2026-11-04T17:56:25.4044895Z ##[start-action display=Compare with baseline (new-fault gate);id=__geyutu6755_ReproCase.gate]
+2026-11-04T17:56:25.4068944Z ##[group]Run set -uo pipefail
+2026-11-04T17:56:25.4069265Z [36;1mset -uo pipefail[0m
+2026-11-04T17:56:25.4069504Z [36;1mif [ ! -f "$BASELINE" ]; then[0m
+2026-11-04T17:56:25.4070165Z [36;1m  echo "::notice::Baseline '$BASELINE' not found — first run on this branch? Skipping the new-findings gate; this scan becomes the new baseline candidate."[0m
+2026-11-04T17:56:25.4071021Z [36;1m  echo "new-findings=" >> "$GITHUB_OUTPUT"[0m
+2026-11-04T17:56:25.4071311Z [36;1m  exit 0[0m
+2026-11-04T17:56:25.4071500Z [36;1mfi[0m
+2026-11-04T17:56:25.4071749Z [36;1mif [ ! -f reprocase-report/result.json ]; then[0m
+2026-11-04T17:56:25.4072308Z [36;1m  echo "::error::Scan produced no result.json — the scan may have failed before writing results. Cannot compare."[0m
+2026-11-04T17:56:25.4072799Z [36;1m  exit 1[0m
+2026-11-04T17:56:25.4072986Z [36;1mfi[0m
+2026-11-04T17:56:25.4073423Z [36;1mGATE_ARGS=(compare "$BASELINE" reprocase-report/result.json --out reprocase-report/compare --fail-on new)[0m
+2026-11-04T17:56:25.4074265Z [36;1mset +e[0m
+2026-11-04T17:56:25.4074483Z [36;1mreprocase "${GATE_ARGS[@]}"[0m
+2026-11-04T17:56:25.4074734Z [36;1mCODE=$?[0m
+2026-11-04T17:56:25.4074925Z [36;1mset -e[0m
+2026-11-04T17:56:25.4075446Z [36;1mNEW=$(node -e "const r=require('./reprocase-report/compare/compare.json');console.log(r.summary.newCount)" 2>/dev/null || echo 0)[0m
+2026-11-04T17:56:25.4076072Z [36;1mecho "new-findings=$NEW" >> "$GITHUB_OUTPUT"[0m
+2026-11-04T17:56:25.4076367Z [36;1mcase "$CODE" in[0m
+2026-11-04T17:56:25.4076642Z [36;1m  0) echo "ReproCase compare: no new findings." ;;[0m
+2026-11-04T17:56:25.4077448Z [36;1m  1) echo "::error::ReproCase compare: $NEW new finding(s) vs baseline (coverage shrank = unconfirmed, see report)." ; exit 1 ;;[0m
+2026-11-04T17:56:25.4078291Z [36;1m  2) echo "::error::ReproCase compare failed to run (bad baseline file?). Fix the baseline or remove compare-with." ; exit 1 ;;[0m
+2026-11-04T17:56:25.4078827Z [36;1mesac[0m
+2026-11-04T17:56:25.4098335Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-04T17:56:25.4098667Z env:
+2026-11-04T17:56:25.4098862Z   BASELINE: baseline/result.json
+2026-11-04T17:56:25.4099105Z   FAIL_ON_NEW: true
+2026-11-04T17:56:25.4099311Z ##[endgroup]
+2026-11-04T17:56:25.8709731Z 
+2026-11-04T17:56:25.8711742Z ReproCase v0.4.0 — comparison finished
+2026-11-04T17:56:25.8712907Z Baseline: http://127.0.0.1:4173/ (3 pages, 2026-11-04T16:56:53.993Z)
+2026-11-04T17:56:25.8714370Z Current:  http://127.0.0.1:4173/ (4 pages, 2026-11-04T17:56:14.330Z)
+2026-11-04T17:56:25.8714991Z 
+2026-11-04T17:56:25.8715177Z New:        0
+2026-11-04T17:56:25.8715624Z Resolved:   0
+2026-11-04T17:56:25.8716019Z Persistent: 0 (status changed: 0)
+2026-11-04T17:56:25.8716513Z Coverage:   +1 page(s), -0 page(s)
+2026-11-04T17:56:25.8716777Z 
+2026-11-04T17:56:25.8717072Z HTML diff: reprocase-report/compare/compare.html
+2026-11-04T17:56:25.8718016Z JSON diff: reprocase-report/compare/compare.json
+2026-11-04T17:56:25.8718403Z 
+2026-11-04T17:56:25.9274294Z ReproCase compare: no new findings.
+2026-11-04T17:56:25.9282427Z ##[end-action id=__geyutu6755_ReproCase.gate;outcome=success;conclusion=success;duration_ms=523]
+2026-11-04T17:56:25.9285392Z ##[start-action display=Publish privacy-stripped report;id=__geyutu6755_ReproCase.__run_3]
+2026-11-04T17:56:25.9305771Z ##[group]Run set -euo pipefail
+2026-11-04T17:56:25.9306269Z [36;1mset -euo pipefail[0m
+2026-11-04T17:56:25.9306900Z [36;1m# Traces record raw network traffic (incl. unredacted URLs) — private[0m
+2026-11-04T17:56:25.9307758Z [36;1m# evidence, never uploaded. Screenshots are of YOUR site: keep them,[0m
+2026-11-04T17:56:25.9308539Z [36;1m# they belong to you. result.json / report.html / issues.md are[0m
+2026-11-04T17:56:25.9309256Z [36;1m# redacted at source (token/session query params).[0m
+2026-11-04T17:56:25.9309840Z [36;1mrm -rf reprocase-report/artifacts/traces[0m
+2026-11-04T17:56:25.9310401Z [36;1mls reprocase-report[0m
+2026-11-04T17:56:25.9332084Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-04T17:56:25.9332464Z ##[endgroup]
+2026-11-04T17:56:25.9400283Z artifacts
+2026-11-04T17:56:25.9400528Z compare
+2026-11-04T17:56:25.9400736Z generated-tests
+2026-11-04T17:56:25.9400957Z index.html
+2026-11-04T17:56:25.9401149Z issues
+2026-11-04T17:56:25.9401775Z issues.md
+2026-11-04T17:56:25.9402110Z report.html
+2026-11-04T17:56:25.9402429Z result.json
+2026-11-04T17:56:25.9409970Z ##[end-action id=__geyutu6755_ReproCase.__run_3;outcome=success;conclusion=success;duration_ms=12]
+2026-11-04T17:56:25.9412156Z ##[start-action display=Run actions/upload-artifact@v4;id=__geyutu6755_ReproCase.__actions_upload-artifact]
+2026-11-04T17:56:25.9450596Z ##[group]Run actions/upload-artifact@v4
+2026-11-04T17:56:25.9450900Z with:
+2026-11-04T17:56:25.9451108Z   name: reprocase-report
+2026-11-04T17:56:25.9451355Z   path: reprocase-report/
+2026-11-04T17:56:25.9451585Z   retention-days: 14
+2026-11-04T17:56:25.9451805Z   if-no-files-found: warn
+2026-11-04T17:56:25.9452038Z   compression-level: 6
+2026-11-04T17:56:25.9452251Z   overwrite: false
+2026-11-04T17:56:25.9452468Z   include-hidden-files: false
+2026-11-04T17:56:25.9452705Z ##[endgroup]
+2026-11-04T17:56:26.1210574Z (node:2732) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-04T17:56:26.1212506Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-04T17:56:26.1324898Z With the provided path, there will be 8 files uploaded
+2026-11-04T17:56:26.1331799Z Artifact name is valid!
+2026-11-04T17:56:26.1332717Z Root directory input is valid!
+2026-11-04T17:56:26.5154182Z Beginning upload of artifact content to blob storage
+2026-11-04T17:56:26.5476311Z (node:2732) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-04T17:56:26.8362300Z Uploaded bytes 28996
+2026-11-04T17:56:26.9038816Z Finished uploading artifact content to blob storage!
+2026-11-04T17:56:26.9040063Z SHA256 digest of uploaded artifact zip is 3c3447fb46951b26897a903dd919738a88287e48334ade302f09dc15c92e5ce4
+2026-11-04T17:56:26.9041309Z Finalizing artifact upload
+2026-11-04T17:56:27.3807454Z Artifact reprocase-report.zip successfully finalized. Artifact ID 13349811223
+2026-11-04T17:56:27.3808615Z Artifact reprocase-report has been successfully uploaded! Final size is 28996 bytes. Artifact ID is 13349811223
+2026-11-04T17:56:27.3815402Z Artifact download URL: https://github.com/geyutu6755/reprocase-actions-demo/actions/runs/41881839581/artifacts/13349811223
+2026-11-04T17:56:27.3948079Z ##[end-action id=__geyutu6755_ReproCase.__actions_upload-artifact;outcome=success;conclusion=success;duration_ms=1453]

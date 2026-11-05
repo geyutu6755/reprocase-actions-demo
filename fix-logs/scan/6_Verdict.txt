@@ -1,0 +1,5 @@
+﻿2026-11-04T17:56:18.5283696Z ##[group]Run echo "verdict=clean (exit 0)"
+2026-11-04T17:56:18.5283926Z [36;1mecho "verdict=clean (exit 0)"[0m
+2026-11-04T17:56:18.5301370Z shell: /usr/bin/bash -e {0}
+2026-11-04T17:56:18.5301526Z ##[endgroup]
+2026-11-04T17:56:18.5336292Z verdict=clean (exit 0)

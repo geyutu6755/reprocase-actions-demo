@@ -1,0 +1,5 @@
+﻿2026-11-04T17:55:52.0989779Z ##[group]Run node start-and-wait.mjs
+2026-11-04T17:55:52.0990252Z [36;1mnode start-and-wait.mjs[0m
+2026-11-04T17:55:52.1025360Z shell: /usr/bin/bash -e {0}
+2026-11-04T17:55:52.1025722Z ##[endgroup]
+2026-11-04T17:55:52.4585194Z site ready (detached server kept alive for later steps)
