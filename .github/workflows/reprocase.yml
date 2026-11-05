@@ -73,3 +73,94 @@ jobs:
           compare-with: baseline/result.json
           fail-on-new: true
           max-pages: 10
+
+  fon-true:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Inject fault
+        run: bash setup-fault.sh
+      - name: Start site
+        run: node start-and-wait.mjs
+      - name: Scan (fail-on never + fail-on-new true)
+        id: scan
+        continue-on-error: true
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          compare-with: baseline/result.json
+          fail-on-new: 'true'
+          max-pages: 10
+      - name: Assert gate fired
+        run: |
+          code="${{ steps.scan.outputs.exit-code }}"
+          new="${{ steps.scan.outputs.new-findings }}"
+          echo "exit=$code new=$new"
+          if [ "$code" != "1" ]; then echo "::error::Expected exit 1"; exit 1; fi
+
+  fon-false:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Inject fault
+        run: bash setup-fault.sh
+      - name: Start site
+        run: node start-and-wait.mjs
+      - name: Scan (fail-on never + fail-on-new false)
+        id: scan
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          compare-with: baseline/result.json
+          fail-on-new: 'false'
+          max-pages: 10
+      - name: Assert gate did not fire
+        run: |
+          code="${{ steps.scan.outputs.exit-code }}"
+          if [ "$code" != "0" ]; then echo "::error::Expected exit 0"; exit 1; fi
+
+  ref-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: node start-and-wait.mjs
+      - name: Scan (ref=v0.5.1 tag)
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          reprocase-ref: 'v0.5.1'
+          max-pages: 5
+
+  ref-sha:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: node start-and-wait.mjs
+      - name: Scan (ref=v0.5.1 commit SHA)
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          reprocase-ref: '7e67bca3efd3cffcbac3e10bb624f7a4f3a00a7d'
+          max-pages: 5
+
+  ref-invalid:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Scan (ref=nonexistent)
+        id: scan
+        continue-on-error: true
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          reprocase-ref: 'nonexistent-ref-xyz-12345'
+      - name: Assert error
+        run: |
+          if [ "${{ steps.scan.outcome }}" != "failure" ]; then
+            echo "::error::Expected failure"; exit 1
+          fi
