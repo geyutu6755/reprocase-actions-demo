@@ -2,6 +2,8 @@ name: "v0.5.1 post-release verification"
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
 
 permissions:
   contents: read
