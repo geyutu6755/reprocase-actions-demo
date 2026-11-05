@@ -20,7 +20,7 @@ jobs:
         run: node start-and-wait.mjs
       - name: ReproCase scan
         id: reproscan
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@fix/v0.5.1-actions-reliability
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
         with:
           url: http://127.0.0.1:4173/
           fail-on: verified
