@@ -1,0 +1,170 @@
+name: "v0.5.1 post-release verification"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fon-true-with-new-fault:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Inject a new fault page
+        run: |
+          mkdir -p site
+          printf '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fault</title></head>\n<body><p>Fault page</p><img src="./missing-fault-asset.png" alt="x" width="10" height="10">\n<script>document.addEventListener("DOMContentLoaded",function(){throw new Error("FonTrueBoom: verification fault")});</script>\n</body></html>\n' > site/fault-page.html
+          node -e 'const fs=require("fs");let t=fs.readFileSync("site/index.html","utf8");t=t.replace("</main>","<p><a href=\"./fault-page.html\">Fault page</a></p></main>");fs.writeFileSync("site/index.html",t)'
+      - run: node start-and-wait.mjs
+      - name: Scan (fail-on=never, fail-on-new=true, gate fires)
+        id: scan
+        continue-on-error: true
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          compare-with: baseline/result.json
+          fail-on-new: 'true'
+          max-pages: 10
+      - name: Assert gate fired
+        run: |
+          code="${{ steps.scan.outputs.exit-code }}"
+          new="${{ steps.scan.outputs.new-findings }}"
+          echo "exit=$code new=$new"
+          if [ "$code" != "1" ]; then echo "::error::Expected exit 1 (gate fired) but got $code"; exit 1; fi
+          if [ "$new" = "0" ] || [ -z "$new" ]; then echo "::error::Expected new findings > 0"; exit 1; fi
+          echo "PASS: fail-on-new=true + new fault -> action exit 1"
+
+  fon-false-with-new-fault:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Inject a new fault page
+        run: |
+          mkdir -p site
+          printf '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fault</title></head>\n<body><p>Fault page</p><img src="./missing-fault-asset2.png" alt="x" width="10" height="10">\n<script>document.addEventListener("DOMContentLoaded",function(){throw new Error("FonFalseBoom: verification fault")});</script>\n</body></html>\n' > site/fault-page.html
+          node -e 'const fs=require("fs");let t=fs.readFileSync("site/index.html","utf8");t=t.replace("</main>","<p><a href=\"./fault-page.html\">Fault page</a></p></main>");fs.writeFileSync("site/index.html",t)'
+      - run: node start-and-wait.mjs
+      - name: Scan (fail-on=never, fail-on-new=false, gate does NOT fire)
+        id: scan
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          compare-with: baseline/result.json
+          fail-on-new: 'false'
+          max-pages: 10
+      - name: Assert gate did not fire
+        run: |
+          code="${{ steps.scan.outputs.exit-code }}"
+          new="${{ steps.scan.outputs.new-findings }}"
+          echo "exit=$code new=$new"
+          if [ "$code" != "0" ]; then echo "::error::Expected exit 0 (fail-on-new=false, no gate) but got $code"; exit 1; fi
+          echo "PASS: fail-on-new=false + new fault -> action exit 0 (report only)"
+
+  ref-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: node start-and-wait.mjs
+      - name: Scan with reprocase-ref=v0.5.1 (tag)
+        id: scan
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          reprocase-ref: 'v0.5.1'
+          max-pages: 5
+      - name: Verify
+        run: echo "PASS: reprocase-ref=v0.5.1 (tag) resolved and ran"
+
+  ref-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: node start-and-wait.mjs
+      - name: Scan with reprocase-ref=main (branch)
+        id: scan
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          reprocase-ref: 'main'
+          max-pages: 5
+      - name: Verify
+        run: echo "PASS: reprocase-ref=main (branch) resolved and ran"
+
+  ref-sha:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: node start-and-wait.mjs
+      - name: Scan with reprocase-ref=commit SHA
+        id: scan
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          reprocase-ref: '7e67bca3efd3cffcbac3e10bb624f7a4f3a00a7d'
+          max-pages: 5
+      - name: Verify
+        run: echo "PASS: reprocase-ref=<full SHA> resolved and ran"
+
+  ref-invalid:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Scan with nonexistent ref
+        id: scan
+        continue-on-error: true
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          reprocase-ref: 'nonexistent-ref-xyz-12345'
+      - name: Assert clear error
+        run: |
+          if [ "${{ steps.scan.outcome }}" != "failure" ]; then
+            echo "::error::Expected failure for nonexistent ref"; exit 1
+          fi
+          echo "PASS: nonexistent ref -> clear error"
+
+  scanner-exit-2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Scan unreachable URL
+        id: scan
+        continue-on-error: true
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:59999/
+          fail-on: verified
+      - name: Assert exit 2 + verdict=error
+        run: |
+          code="${{ steps.scan.outputs.exit-code }}"
+          verdict="${{ steps.scan.outputs.verdict }}"
+          if [ "$code" != "2" ] || [ "$verdict" != "error" ]; then
+            echo "::error::Expected exit 2 + verdict=error but got $code/$verdict"; exit 1
+          fi
+          echo "PASS: scanner exit 2 -> honest error"
+
+  no-change:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: node start-and-wait.mjs
+      - name: Scan clean site with baseline (no new findings)
+        id: scan
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        with:
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          compare-with: baseline/result.json
+          max-pages: 10
+      - name: Assert exit 0
+        run: |
+          code="${{ steps.scan.outputs.exit-code }}"
+          if [ "$code" != "0" ]; then echo "::error::Expected exit 0 but got $code"; exit 1; fi
+          echo "PASS: no change -> exit 0"
