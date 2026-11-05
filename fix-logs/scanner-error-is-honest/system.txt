@@ -1,8 +1,0 @@
-2026-11-04T17:55:46.2050000Z Job is waiting for a hosted runner to come online.
-2026-11-04T17:55:46.2040000Z Job is about to start running on the hosted runner: GitHub Actions 1000000928
-2026-11-04T17:55:46.2010000Z Evaluating scanner-error-is-honest.if
-2026-11-04T17:55:46.2010000Z Evaluating: success()
-2026-11-04T17:55:46.2010000Z Result: true
-2026-11-04T17:55:46.2020000Z Requested labels: ubuntu-latest
-2026-11-04T17:55:46.2020000Z Job defined at: geyutu6755/reprocase-actions-demo/.github/workflows/reprocase.yml@refs/heads/main
-2026-11-04T17:55:46.2020000Z Waiting for a runner to pick up this job...
