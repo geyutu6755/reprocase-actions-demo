@@ -14,10 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Inject a new fault page
-        run: |
-          mkdir -p site
-          printf '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fault</title></head>\n<body><p>Fault page</p><img src="./missing-fault-asset.png" alt="x" width="10" height="10">\n<script>document.addEventListener("DOMContentLoaded",function(){throw new Error("FonTrueBoom: verification fault")});</script>\n</body></html>\n' > site/fault-page.html
-          node -e 'const fs=require("fs");let t=fs.readFileSync("site/index.html","utf8");t=t.replace("</main>","<p><a href=\"./fault-page.html\">Fault page</a></p></main>");fs.writeFileSync("site/index.html",t)'
+        run: bash setup-fault.sh
       - run: node start-and-wait.mjs
       - name: Scan (fail-on=never, fail-on-new=true, gate fires)
         id: scan
@@ -43,10 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Inject a new fault page
-        run: |
-          mkdir -p site
-          printf '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fault</title></head>\n<body><p>Fault page</p><img src="./missing-fault-asset2.png" alt="x" width="10" height="10">\n<script>document.addEventListener("DOMContentLoaded",function(){throw new Error("FonFalseBoom: verification fault")});</script>\n</body></html>\n' > site/fault-page.html
-          node -e 'const fs=require("fs");let t=fs.readFileSync("site/index.html","utf8");t=t.replace("</main>","<p><a href=\"./fault-page.html\">Fault page</a></p></main>");fs.writeFileSync("site/index.html",t)'
+        run: bash setup-fault.sh
       - run: node start-and-wait.mjs
       - name: Scan (fail-on=never, fail-on-new=false, gate does NOT fire)
         id: scan
