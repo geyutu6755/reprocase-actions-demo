@@ -133,7 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - run: node start-and-wait.mjs
+      - run: node server.mjs site & sleep 3
       - name: Scan (ref=v0.5.1 tag)
         uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
         with:
@@ -146,7 +146,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - run: node start-and-wait.mjs
+      - run: node server.mjs site & sleep 3
       - name: Scan (ref=v0.5.1 commit SHA)
         uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
         with:
