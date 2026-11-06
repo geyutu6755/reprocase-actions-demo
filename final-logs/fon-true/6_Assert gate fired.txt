@@ -1,0 +1,10 @@
+﻿2026-11-06T00:23:13.2274077Z ##[group]Run code="2"
+2026-11-06T00:23:13.2274285Z [36;1mcode="2"[0m
+2026-11-06T00:23:13.2274396Z [36;1mnew=""[0m
+2026-11-06T00:23:13.2274513Z [36;1mecho "exit=$code new=$new"[0m
+2026-11-06T00:23:13.2274707Z [36;1mif [ "$code" != "1" ]; then echo "::error::Expected exit 1"; exit 1; fi[0m
+2026-11-06T00:23:13.2291233Z shell: /usr/bin/bash -e {0}
+2026-11-06T00:23:13.2291397Z ##[endgroup]
+2026-11-06T00:23:13.2326298Z exit=2 new=
+2026-11-06T00:23:13.2327131Z ##[error]Expected exit 1
+2026-11-06T00:23:13.2329120Z ##[error]Process completed with exit code 1.

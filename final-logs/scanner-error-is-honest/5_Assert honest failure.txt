@@ -1,0 +1,13 @@
+﻿2026-11-06T00:23:12.0236453Z ##[group]Run code="2"
+2026-11-06T00:23:12.0236789Z [36;1mcode="2"[0m
+2026-11-06T00:23:12.0237157Z [36;1mverdict="error"[0m
+2026-11-06T00:23:12.0237588Z [36;1mecho "exit=$code verdict=$verdict"[0m
+2026-11-06T00:23:12.0237941Z [36;1mif [ "$code" != "2" ] || [ "$verdict" != "error" ]; then[0m
+2026-11-06T00:23:12.0238640Z [36;1m  echo "::error::Scanner did not report the environment error honestly"[0m
+2026-11-06T00:23:12.0239139Z [36;1m  exit 1[0m
+2026-11-06T00:23:12.0239341Z [36;1mfi[0m
+2026-11-06T00:23:12.0239560Z [36;1mecho "scanner-error honesty: OK"[0m
+2026-11-06T00:23:12.0263344Z shell: /usr/bin/bash -e {0}
+2026-11-06T00:23:12.0263791Z ##[endgroup]
+2026-11-06T00:23:12.0315958Z exit=2 verdict=error
+2026-11-06T00:23:12.0316479Z scanner-error honesty: OK

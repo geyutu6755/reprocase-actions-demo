@@ -1,0 +1,6 @@
+﻿2026-11-06T00:22:52.8955559Z ##[group]Run node server.mjs site &
+2026-11-06T00:22:52.8956937Z [36;1mnode server.mjs site &[0m
+2026-11-06T00:22:52.8958061Z [36;1msleep 3[0m
+2026-11-06T00:22:52.8993139Z shell: /usr/bin/bash -e {0}
+2026-11-06T00:22:52.8994493Z ##[endgroup]
+2026-11-06T00:22:52.9778137Z demo site ready

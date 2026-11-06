@@ -1,0 +1,5 @@
+﻿2026-11-06T00:23:22.2778357Z ##[group]Run echo "verdict=error (exit 2)"
+2026-11-06T00:23:22.2778979Z [36;1mecho "verdict=error (exit 2)"[0m
+2026-11-06T00:23:22.2799460Z shell: /usr/bin/bash -e {0}
+2026-11-06T00:23:22.2799871Z ##[endgroup]
+2026-11-06T00:23:22.2860224Z verdict=error (exit 2)

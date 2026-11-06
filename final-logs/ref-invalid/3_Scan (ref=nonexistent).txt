@@ -1,0 +1,145 @@
+﻿2026-11-06T00:22:51.3502912Z ##[group]Run geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+2026-11-06T00:22:51.3504134Z with:
+2026-11-06T00:22:51.3504839Z   url: http://127.0.0.1:4173/
+2026-11-06T00:22:51.3505650Z   fail-on: never
+2026-11-06T00:22:51.3506433Z   reprocase-ref: nonexistent-ref-xyz-12345
+2026-11-06T00:22:51.3507606Z   fail-on-new: true
+2026-11-06T00:22:51.3508370Z   report-name: reprocase-report
+2026-11-06T00:22:51.3509200Z   node-version: 22
+2026-11-06T00:22:51.3509916Z ##[endgroup]
+2026-11-06T00:22:51.3571335Z ##[start-action display=Run actions/setup-node@v5;id=scan.__actions_setup-node]
+2026-11-06T00:22:51.3699333Z ##[group]Run actions/setup-node@v5
+2026-11-06T00:22:51.3700221Z with:
+2026-11-06T00:22:51.3700879Z   node-version: 22
+2026-11-06T00:22:51.3701590Z   always-auth: false
+2026-11-06T00:22:51.3702320Z   check-latest: false
+2026-11-06T00:22:51.3709017Z   token: ***
+2026-11-06T00:22:51.3709733Z   package-manager-cache: true
+2026-11-06T00:22:51.3710569Z ##[endgroup]
+2026-11-06T00:22:51.5574622Z (node:2180) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-06T00:22:51.5577851Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-06T00:22:51.5580986Z Found in cache @ /opt/hostedtoolcache/node/22.23.4/x64
+2026-11-06T00:22:51.5582510Z ##[group]Environment details
+2026-11-06T00:22:51.9038559Z node: v22.23.4
+2026-11-06T00:22:51.9039717Z npm: 10.9.9
+2026-11-06T00:22:51.9040618Z yarn: 1.22.22
+2026-11-06T00:22:51.9042600Z ##[endgroup]
+2026-11-06T00:22:51.9150541Z ##[end-action id=scan.__actions_setup-node;outcome=success;conclusion=success;duration_ms=557]
+2026-11-06T00:22:51.9163891Z ##[start-action display=Install ReproCase;id=scan.install]
+2026-11-06T00:22:51.9212342Z ##[group]Run set -euo pipefail
+2026-11-06T00:22:51.9213316Z [36;1mset -euo pipefail[0m
+2026-11-06T00:22:51.9214151Z [36;1mREF="${REPROCASE_REF}"[0m
+2026-11-06T00:22:51.9215324Z [36;1m# Strip leading "refs/" so the composite action's own ref value works.[0m
+2026-11-06T00:22:51.9216843Z [36;1mcase "$REF" in refs/*) REF="${REF#refs/}";; esac[0m
+2026-11-06T00:22:51.9218081Z [36;1m# Default: a known-good release tag (never silently fall back to[0m
+2026-11-06T00:22:51.9219504Z [36;1m# another ref when the user explicitly provided one that doesn't exist).[0m
+2026-11-06T00:22:51.9220750Z [36;1mif [ -z "$REF" ]; then REF="v0.5.1"; fi[0m
+2026-11-06T00:22:51.9221733Z [36;1mSRC="${RUNNER_TEMP}/reprocase-src"[0m
+2026-11-06T00:22:51.9222626Z [36;1mrm -rf "$SRC"[0m
+2026-11-06T00:22:51.9223715Z [36;1mecho "Installing ReproCase from github.com/geyutu6755/ReproCase ($REF)"[0m
+2026-11-06T00:22:51.9225217Z [36;1m# Try tag/branch first via --branch; fall back to SHA via raw checkout.[0m
+2026-11-06T00:22:51.9227083Z [36;1mif git clone --depth 1 --branch "$REF" https://github.com/geyutu6755/ReproCase.git "$SRC" 2>/dev/null; then[0m
+2026-11-06T00:22:51.9228603Z [36;1m  echo "Cloned tag/branch: $REF"[0m
+2026-11-06T00:22:51.9229464Z [36;1melse[0m
+2026-11-06T00:22:51.9230301Z [36;1m  echo "--branch clone failed; trying SHA checkout"[0m
+2026-11-06T00:22:51.9231538Z [36;1m  git clone https://github.com/geyutu6755/ReproCase.git "$SRC"[0m
+2026-11-06T00:22:51.9232636Z [36;1m  cd "$SRC"[0m
+2026-11-06T00:22:51.9233514Z [36;1m  if git cat-file -e "$REF^{commit}" 2>/dev/null; then[0m
+2026-11-06T00:22:51.9234547Z [36;1m    git checkout "$REF"[0m
+2026-11-06T00:22:51.9235504Z [36;1m    echo "Checked out SHA: $(git rev-parse HEAD)"[0m
+2026-11-06T00:22:51.9236473Z [36;1m  else[0m
+2026-11-06T00:22:51.9238343Z [36;1m    echo "::error::ReproCase ref '$REF' not found as a tag, branch or commit SHA in geyutu6755/ReproCase. Available tags: https://github.com/geyutu6755/ReproCase/tags"[0m
+2026-11-06T00:22:51.9240272Z [36;1m    exit 1[0m
+2026-11-06T00:22:51.9240972Z [36;1m  fi[0m
+2026-11-06T00:22:51.9241628Z [36;1mfi[0m
+2026-11-06T00:22:51.9242280Z [36;1mcd "$SRC"[0m
+2026-11-06T00:22:51.9243228Z [36;1mACTUAL=$(git rev-parse HEAD)[0m
+2026-11-06T00:22:51.9244410Z [36;1mecho "reprocase-commit=$ACTUAL" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:51.9245474Z [36;1mecho "Checked out: $ACTUAL"[0m
+2026-11-06T00:22:51.9246658Z [36;1m# Global installs omit devDependencies, and the TypeScript build needs[0m
+2026-11-06T00:22:51.9248257Z [36;1m# them — so build here (npm ci uses the lockfile for reproducibility)[0m
+2026-11-06T00:22:51.9249673Z [36;1m# and install the built package globally. The prepare script runs[0m
+2026-11-06T00:22:51.9251005Z [36;1m# after dist/ already exists, so it's a no-op at that point.[0m
+2026-11-06T00:22:51.9252122Z [36;1mnpm ci --no-fund --no-audit[0m
+2026-11-06T00:22:51.9252993Z [36;1mnpm run build[0m
+2026-11-06T00:22:51.9253820Z [36;1mnpm install -g --no-fund --no-audit .[0m
+2026-11-06T00:22:51.9254766Z [36;1mreprocase --version[0m
+2026-11-06T00:22:51.9290096Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-06T00:22:51.9291153Z env:
+2026-11-06T00:22:51.9291876Z   REPROCASE_REF: nonexistent-ref-xyz-12345
+2026-11-06T00:22:51.9292791Z ##[endgroup]
+2026-11-06T00:22:51.9380586Z Installing ReproCase from github.com/geyutu6755/ReproCase (nonexistent-ref-xyz-12345)
+2026-11-06T00:22:52.1733465Z --branch clone failed; trying SHA checkout
+2026-11-06T00:22:52.1754125Z Cloning into '/home/runner/work/_temp/reprocase-src'...
+2026-11-06T00:22:53.0221723Z ##[error]ReproCase ref 'nonexistent-ref-xyz-12345' not found as a tag, branch or commit SHA in geyutu6755/ReproCase. Available tags: https://github.com/geyutu6755/ReproCase/tags
+2026-11-06T00:22:53.0226185Z ##[error]Process completed with exit code 1.
+2026-11-06T00:22:53.0239086Z ##[end-action id=scan.install;outcome=failure;conclusion=failure;duration_ms=1107]
+2026-11-06T00:22:53.0242823Z ##[start-action display=Install Chromium;id=scan.__run]
+2026-11-06T00:22:53.0249062Z ##[end-action id=scan.__run;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-06T00:22:53.0253573Z ##[start-action display=Run scan;id=scan.scan]
+2026-11-06T00:22:53.0255394Z ##[end-action id=scan.scan;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-06T00:22:53.0258581Z ##[start-action display=Compare with baseline (new-fault gate);id=scan.gate]
+2026-11-06T00:22:53.0265404Z ##[end-action id=scan.gate;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-06T00:22:53.0272280Z ##[start-action display=Final CI decision;id=scan.decision]
+2026-11-06T00:22:53.0314701Z ##[group]Run set -uo pipefail
+2026-11-06T00:22:53.0315267Z [36;1mset -uo pipefail[0m
+2026-11-06T00:22:53.0315611Z [36;1m# Propagate the gate's new-findings output.[0m
+2026-11-06T00:22:53.0315908Z [36;1mNEW=""[0m
+2026-11-06T00:22:53.0316117Z [36;1mecho "new-findings=$NEW" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:53.0316438Z [36;1m[0m
+2026-11-06T00:22:53.0316918Z [36;1mFAIL_ON_NEW=$(echo "$FAIL_ON_NEW_RAW" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')[0m
+2026-11-06T00:22:53.0317436Z [36;1m[0m
+2026-11-06T00:22:53.0317801Z [36;1m# Priority 1: installation or scan environment error (exit 2).[0m
+2026-11-06T00:22:53.0318411Z [36;1mif [ "$INSTALL_CONCLUSION" = "failure" ] || [ "$SCAN_VERDICT" = "error" ]; then[0m
+2026-11-06T00:22:53.0319038Z [36;1m  echo "exit-code=2" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:53.0319531Z [36;1m  echo "Final verdict: error (environment/configuration problem)."[0m
+2026-11-06T00:22:53.0319847Z [36;1m  exit 2[0m
+2026-11-06T00:22:53.0320021Z [36;1mfi[0m
+2026-11-06T00:22:53.0320179Z [36;1m[0m
+2026-11-06T00:22:53.0320430Z [36;1m# Priority 2: baseline gate failed (new findings with fail-on-new=true,[0m
+2026-11-06T00:22:53.0321078Z [36;1m# or compare infrastructure error).[0m
+2026-11-06T00:22:53.0321499Z [36;1mif [ "$HAS_COMPARE" = "true" ] && [ "$GATE_CONCLUSION" = "failure" ]; then[0m
+2026-11-06T00:22:53.0321805Z [36;1m  echo "exit-code=1" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:53.0322127Z [36;1m  echo "Final verdict: gate failed (new findings vs baseline)."[0m
+2026-11-06T00:22:53.0322785Z [36;1m  exit 1[0m
+2026-11-06T00:22:53.0323033Z [36;1mfi[0m
+2026-11-06T00:22:53.0323254Z [36;1m[0m
+2026-11-06T00:22:53.0323645Z [36;1m# Priority 3: scan findings at or above the fail-on threshold.[0m
+2026-11-06T00:22:53.0323953Z [36;1mif [ "$SCAN_VERDICT" = "findings" ]; then[0m
+2026-11-06T00:22:53.0324211Z [36;1m  echo "exit-code=1" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:53.0324864Z [36;1m  echo "Final verdict: findings exist (scan exit $SCAN_EXIT)."[0m
+2026-11-06T00:22:53.0325263Z [36;1m  exit 1[0m
+2026-11-06T00:22:53.0325421Z [36;1mfi[0m
+2026-11-06T00:22:53.0325577Z [36;1m[0m
+2026-11-06T00:22:53.0325747Z [36;1m# Priority 4: all checks passed.[0m
+2026-11-06T00:22:53.0326001Z [36;1mecho "exit-code=0" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:53.0326584Z [36;1mecho "Final verdict: clean."[0m
+2026-11-06T00:22:53.0327625Z [36;1mexit 0[0m
+2026-11-06T00:22:53.0350532Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-06T00:22:53.0350823Z env:
+2026-11-06T00:22:53.0350994Z   SCAN_VERDICT: 
+2026-11-06T00:22:53.0351162Z   SCAN_EXIT: 
+2026-11-06T00:22:53.0351333Z   GATE_CONCLUSION: skipped
+2026-11-06T00:22:53.0351696Z   INSTALL_CONCLUSION: failure
+2026-11-06T00:22:53.0351994Z   FAIL_ON_NEW_RAW: true
+2026-11-06T00:22:53.0352258Z   HAS_COMPARE: false
+2026-11-06T00:22:53.0352471Z ##[endgroup]
+2026-11-06T00:22:53.0422106Z Final verdict: error (environment/configuration problem).
+2026-11-06T00:22:53.0424284Z ##[error]Process completed with exit code 2.
+2026-11-06T00:22:53.0441334Z ##[end-action id=scan.decision;outcome=failure;conclusion=failure;duration_ms=16]
+2026-11-06T00:22:53.0443142Z ##[start-action display=Publish privacy-stripped report;id=scan.__run_2]
+2026-11-06T00:22:53.0459709Z ##[group]Run set -euo pipefail
+2026-11-06T00:22:53.0459969Z [36;1mset -euo pipefail[0m
+2026-11-06T00:22:53.0460298Z [36;1m# Traces record raw network traffic (incl. unredacted URLs) — private[0m
+2026-11-06T00:22:53.0460729Z [36;1m# evidence, never uploaded. Screenshots are of YOUR site: keep them,[0m
+2026-11-06T00:22:53.0461133Z [36;1m# they belong to you. result.json / report.html / issues.md are[0m
+2026-11-06T00:22:53.0461486Z [36;1m# redacted at source (token/session query params).[0m
+2026-11-06T00:22:53.0461773Z [36;1mif [ -d reprocase-report ]; then[0m
+2026-11-06T00:22:53.0462033Z [36;1m  rm -rf reprocase-report/artifacts/traces[0m
+2026-11-06T00:22:53.0462316Z [36;1m  ls reprocase-report[0m
+2026-11-06T00:22:53.0462560Z [36;1mfi[0m
+2026-11-06T00:22:53.0478167Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-06T00:22:53.0478466Z ##[endgroup]
+2026-11-06T00:22:53.0517680Z ##[end-action id=scan.__run_2;outcome=success;conclusion=success;duration_ms=7]
+2026-11-06T00:22:53.0537650Z ##[start-action display=Run actions/upload-artifact@v4;id=scan.__actions_upload-artifact]
+2026-11-06T00:22:53.1000836Z ##[end-action id=scan.__actions_upload-artifact;outcome=skipped;conclusion=skipped;duration_ms=0]

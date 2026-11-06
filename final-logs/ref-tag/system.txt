@@ -1,0 +1,8 @@
+2026-11-06T00:22:46.8070000Z Evaluating ref-tag.if
+2026-11-06T00:22:46.8070000Z Evaluating: success()
+2026-11-06T00:22:46.8070000Z Result: true
+2026-11-06T00:22:46.8210000Z Job is about to start running on the hosted runner: GitHub Actions 1000001258
+2026-11-06T00:22:46.8140000Z Requested labels: ubuntu-latest
+2026-11-06T00:22:46.8140000Z Job defined at: geyutu6755/reprocase-actions-demo/.github/workflows/reprocase.yml@refs/heads/main
+2026-11-06T00:22:46.8140000Z Waiting for a runner to pick up this job...
+2026-11-06T00:22:46.8170000Z Job is waiting for a hosted runner to come online.

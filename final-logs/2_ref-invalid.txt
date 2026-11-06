@@ -1,0 +1,281 @@
+﻿2026-11-06T00:22:48.7325181Z Current runner version: '2.338.2'
+2026-11-06T00:22:48.7347476Z ##[group]Runner Image Provisioner
+2026-11-06T00:22:48.7348306Z Hosted Compute Agent
+2026-11-06T00:22:48.7348839Z Version: 20261028.624
+2026-11-06T00:22:48.7349401Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-06T00:22:48.7350028Z Build Date: 2026-10-28T21:51:42Z
+2026-11-06T00:22:48.7350604Z Worker ID: {cf1339f6-1cdd-4fa3-a9db-21ead680e22e}
+2026-11-06T00:22:48.7351237Z Region: westcentralus
+2026-11-06T00:22:48.7351802Z Cloud: Azure
+2026-11-06T00:22:48.7352283Z ##[endgroup]
+2026-11-06T00:22:48.7353444Z ##[group]Operating System
+2026-11-06T00:22:48.7353971Z Ubuntu
+2026-11-06T00:22:48.7354473Z 24.04.5
+2026-11-06T00:22:48.7354949Z LTS
+2026-11-06T00:22:48.7355374Z ##[endgroup]
+2026-11-06T00:22:48.7355897Z ##[group]Runner Image
+2026-11-06T00:22:48.7356558Z Image: ubuntu-24.04
+2026-11-06T00:22:48.7357321Z Version: 20261101.360.1
+2026-11-06T00:22:48.7358455Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261101.360/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-06T00:22:48.7360112Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261101.360
+2026-11-06T00:22:48.7360963Z ##[endgroup]
+2026-11-06T00:22:48.7361903Z ##[group]GITHUB_TOKEN Permissions
+2026-11-06T00:22:48.7363801Z Contents: read
+2026-11-06T00:22:48.7364378Z Metadata: read
+2026-11-06T00:22:48.7364873Z ##[endgroup]
+2026-11-06T00:22:48.7367170Z Secret source: Actions
+2026-11-06T00:22:48.7368113Z Cache mode: write
+2026-11-06T00:22:48.7368711Z Prepare workflow directory
+2026-11-06T00:22:48.7688527Z Prepare all required actions
+2026-11-06T00:22:48.7728634Z Getting action download info
+2026-11-06T00:22:49.0433400Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-11-06T00:22:49.1704683Z Download action repository 'geyutu6755/ReproCase@v0.5.1' (SHA:7e67bca3efd3cffcbac3e10bb624f7a4f3a00a7d)
+2026-11-06T00:22:49.7786966Z Getting action download info
+2026-11-06T00:22:49.8932318Z Download action repository 'actions/setup-node@v5' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-11-06T00:22:50.0109144Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-06T00:22:50.2519939Z Complete job name: ref-invalid
+2026-11-06T00:22:50.3284682Z ##[group]Run actions/checkout@v5
+2026-11-06T00:22:50.3286269Z with:
+2026-11-06T00:22:50.3287334Z   repository: geyutu6755/reprocase-actions-demo
+2026-11-06T00:22:50.3294478Z   token: ***
+2026-11-06T00:22:50.3295210Z   ssh-strict: true
+2026-11-06T00:22:50.3295971Z   ssh-user: git
+2026-11-06T00:22:50.3296834Z   persist-credentials: true
+2026-11-06T00:22:50.3297677Z   clean: true
+2026-11-06T00:22:50.3298452Z   sparse-checkout-cone-mode: true
+2026-11-06T00:22:50.3299363Z   fetch-depth: 1
+2026-11-06T00:22:50.3300115Z   fetch-tags: false
+2026-11-06T00:22:50.3300892Z   show-progress: true
+2026-11-06T00:22:50.3301663Z   lfs: false
+2026-11-06T00:22:50.3302402Z   submodules: false
+2026-11-06T00:22:50.3303177Z   set-safe-directory: true
+2026-11-06T00:22:50.3304094Z   allow-unsafe-pr-checkout: false
+2026-11-06T00:22:50.3305247Z ##[endgroup]
+2026-11-06T00:22:50.5331399Z Syncing repository: geyutu6755/reprocase-actions-demo
+2026-11-06T00:22:50.5334295Z ##[group]Getting Git version info
+2026-11-06T00:22:50.5335987Z Working directory is '/home/runner/work/reprocase-actions-demo/reprocase-actions-demo'
+2026-11-06T00:22:50.5338522Z [command]/usr/bin/git version
+2026-11-06T00:22:50.5385431Z git version 2.56.0
+2026-11-06T00:22:50.5410102Z ##[endgroup]
+2026-11-06T00:22:50.5418563Z Temporarily overriding HOME='/home/runner/work/_temp/3f3edf34-9075-41e7-bc60-6f5e0fcd8765' before making global git config changes
+2026-11-06T00:22:50.5421473Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-06T00:22:50.5424473Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/reprocase-actions-demo/reprocase-actions-demo
+2026-11-06T00:22:50.5465492Z Deleting the contents of '/home/runner/work/reprocase-actions-demo/reprocase-actions-demo'
+2026-11-06T00:22:50.5478705Z ##[group]Initializing the repository
+2026-11-06T00:22:50.5480887Z [command]/usr/bin/git init /home/runner/work/reprocase-actions-demo/reprocase-actions-demo
+2026-11-06T00:22:50.5571095Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-06T00:22:50.5573550Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-06T00:22:50.5575844Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-06T00:22:50.5577787Z hint: call:
+2026-11-06T00:22:50.5578776Z hint:
+2026-11-06T00:22:50.5580001Z hint: 	git config --global init.defaultBranch <name>
+2026-11-06T00:22:50.5581460Z hint:
+2026-11-06T00:22:50.5582866Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-06T00:22:50.5585149Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-06T00:22:50.5587123Z hint:
+2026-11-06T00:22:50.5588150Z hint: 	git branch -m <name>
+2026-11-06T00:22:50.5589282Z hint:
+2026-11-06T00:22:50.5590826Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-06T00:22:50.5601523Z Initialized empty Git repository in /home/runner/work/reprocase-actions-demo/reprocase-actions-demo/.git/
+2026-11-06T00:22:50.5615762Z [command]/usr/bin/git remote add origin https://github.com/geyutu6755/reprocase-actions-demo
+2026-11-06T00:22:50.5656199Z ##[endgroup]
+2026-11-06T00:22:50.5658428Z ##[group]Disabling automatic garbage collection
+2026-11-06T00:22:50.5660166Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-06T00:22:50.5691056Z ##[endgroup]
+2026-11-06T00:22:50.5692934Z ##[group]Setting up auth
+2026-11-06T00:22:50.5695727Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-06T00:22:50.5727008Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-06T00:22:50.6034122Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-06T00:22:50.6073542Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-06T00:22:50.6281396Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-06T00:22:50.6319765Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-06T00:22:50.6522357Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-06T00:22:50.7060764Z ##[endgroup]
+2026-11-06T00:22:50.7062259Z ##[group]Fetching the repository
+2026-11-06T00:22:50.7074829Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +cc8a946fe07c0ae892da5c419a9c2469162a8264:refs/remotes/origin/main
+2026-11-06T00:22:51.2541113Z From https://github.com/geyutu6755/reprocase-actions-demo
+2026-11-06T00:22:51.2542763Z  * [new ref]         cc8a946fe07c0ae892da5c419a9c2469162a8264 -> origin/main
+2026-11-06T00:22:51.2546046Z ##[endgroup]
+2026-11-06T00:22:51.2547701Z ##[group]Determining the checkout info
+2026-11-06T00:22:51.2549172Z ##[endgroup]
+2026-11-06T00:22:51.2552467Z [command]/usr/bin/git sparse-checkout disable
+2026-11-06T00:22:51.2604371Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-06T00:22:51.2641273Z ##[group]Checking out the ref
+2026-11-06T00:22:51.2645387Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-11-06T00:22:51.2798605Z Switched to a new branch 'main'
+2026-11-06T00:22:51.2803237Z branch 'main' set up to track 'origin/main'.
+2026-11-06T00:22:51.2810112Z ##[endgroup]
+2026-11-06T00:22:51.2853089Z [command]/usr/bin/git log -1 --format=%H
+2026-11-06T00:22:51.2883168Z cc8a946fe07c0ae892da5c419a9c2469162a8264
+2026-11-06T00:22:51.3502950Z ##[group]Run geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+2026-11-06T00:22:51.3504141Z with:
+2026-11-06T00:22:51.3504845Z   url: http://127.0.0.1:4173/
+2026-11-06T00:22:51.3505655Z   fail-on: never
+2026-11-06T00:22:51.3506438Z   reprocase-ref: nonexistent-ref-xyz-12345
+2026-11-06T00:22:51.3507613Z   fail-on-new: true
+2026-11-06T00:22:51.3508376Z   report-name: reprocase-report
+2026-11-06T00:22:51.3509204Z   node-version: 22
+2026-11-06T00:22:51.3509928Z ##[endgroup]
+2026-11-06T00:22:51.3571372Z ##[start-action display=Run actions/setup-node@v5;id=scan.__actions_setup-node]
+2026-11-06T00:22:51.3699371Z ##[group]Run actions/setup-node@v5
+2026-11-06T00:22:51.3700227Z with:
+2026-11-06T00:22:51.3700884Z   node-version: 22
+2026-11-06T00:22:51.3701595Z   always-auth: false
+2026-11-06T00:22:51.3702325Z   check-latest: false
+2026-11-06T00:22:51.3709021Z   token: ***
+2026-11-06T00:22:51.3709739Z   package-manager-cache: true
+2026-11-06T00:22:51.3710574Z ##[endgroup]
+2026-11-06T00:22:51.5574830Z (node:2180) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-06T00:22:51.5577861Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-06T00:22:51.5580991Z Found in cache @ /opt/hostedtoolcache/node/22.23.4/x64
+2026-11-06T00:22:51.5582516Z ##[group]Environment details
+2026-11-06T00:22:51.9038639Z node: v22.23.4
+2026-11-06T00:22:51.9039723Z npm: 10.9.9
+2026-11-06T00:22:51.9040623Z yarn: 1.22.22
+2026-11-06T00:22:51.9042609Z ##[endgroup]
+2026-11-06T00:22:51.9150573Z ##[end-action id=scan.__actions_setup-node;outcome=success;conclusion=success;duration_ms=557]
+2026-11-06T00:22:51.9163911Z ##[start-action display=Install ReproCase;id=scan.install]
+2026-11-06T00:22:51.9212362Z ##[group]Run set -euo pipefail
+2026-11-06T00:22:51.9213321Z [36;1mset -euo pipefail[0m
+2026-11-06T00:22:51.9214155Z [36;1mREF="${REPROCASE_REF}"[0m
+2026-11-06T00:22:51.9215347Z [36;1m# Strip leading "refs/" so the composite action's own ref value works.[0m
+2026-11-06T00:22:51.9216846Z [36;1mcase "$REF" in refs/*) REF="${REF#refs/}";; esac[0m
+2026-11-06T00:22:51.9218085Z [36;1m# Default: a known-good release tag (never silently fall back to[0m
+2026-11-06T00:22:51.9219507Z [36;1m# another ref when the user explicitly provided one that doesn't exist).[0m
+2026-11-06T00:22:51.9220754Z [36;1mif [ -z "$REF" ]; then REF="v0.5.1"; fi[0m
+2026-11-06T00:22:51.9221737Z [36;1mSRC="${RUNNER_TEMP}/reprocase-src"[0m
+2026-11-06T00:22:51.9222630Z [36;1mrm -rf "$SRC"[0m
+2026-11-06T00:22:51.9223719Z [36;1mecho "Installing ReproCase from github.com/geyutu6755/ReproCase ($REF)"[0m
+2026-11-06T00:22:51.9225220Z [36;1m# Try tag/branch first via --branch; fall back to SHA via raw checkout.[0m
+2026-11-06T00:22:51.9227088Z [36;1mif git clone --depth 1 --branch "$REF" https://github.com/geyutu6755/ReproCase.git "$SRC" 2>/dev/null; then[0m
+2026-11-06T00:22:51.9228607Z [36;1m  echo "Cloned tag/branch: $REF"[0m
+2026-11-06T00:22:51.9229474Z [36;1melse[0m
+2026-11-06T00:22:51.9230305Z [36;1m  echo "--branch clone failed; trying SHA checkout"[0m
+2026-11-06T00:22:51.9231542Z [36;1m  git clone https://github.com/geyutu6755/ReproCase.git "$SRC"[0m
+2026-11-06T00:22:51.9232640Z [36;1m  cd "$SRC"[0m
+2026-11-06T00:22:51.9233518Z [36;1m  if git cat-file -e "$REF^{commit}" 2>/dev/null; then[0m
+2026-11-06T00:22:51.9234550Z [36;1m    git checkout "$REF"[0m
+2026-11-06T00:22:51.9235508Z [36;1m    echo "Checked out SHA: $(git rev-parse HEAD)"[0m
+2026-11-06T00:22:51.9236476Z [36;1m  else[0m
+2026-11-06T00:22:51.9238350Z [36;1m    echo "::error::ReproCase ref '$REF' not found as a tag, branch or commit SHA in geyutu6755/ReproCase. Available tags: https://github.com/geyutu6755/ReproCase/tags"[0m
+2026-11-06T00:22:51.9240276Z [36;1m    exit 1[0m
+2026-11-06T00:22:51.9240975Z [36;1m  fi[0m
+2026-11-06T00:22:51.9241631Z [36;1mfi[0m
+2026-11-06T00:22:51.9242283Z [36;1mcd "$SRC"[0m
+2026-11-06T00:22:51.9243381Z [36;1mACTUAL=$(git rev-parse HEAD)[0m
+2026-11-06T00:22:51.9244414Z [36;1mecho "reprocase-commit=$ACTUAL" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:51.9245478Z [36;1mecho "Checked out: $ACTUAL"[0m
+2026-11-06T00:22:51.9246662Z [36;1m# Global installs omit devDependencies, and the TypeScript build needs[0m
+2026-11-06T00:22:51.9248265Z [36;1m# them — so build here (npm ci uses the lockfile for reproducibility)[0m
+2026-11-06T00:22:51.9249677Z [36;1m# and install the built package globally. The prepare script runs[0m
+2026-11-06T00:22:51.9251009Z [36;1m# after dist/ already exists, so it's a no-op at that point.[0m
+2026-11-06T00:22:51.9252126Z [36;1mnpm ci --no-fund --no-audit[0m
+2026-11-06T00:22:51.9252996Z [36;1mnpm run build[0m
+2026-11-06T00:22:51.9253824Z [36;1mnpm install -g --no-fund --no-audit .[0m
+2026-11-06T00:22:51.9254769Z [36;1mreprocase --version[0m
+2026-11-06T00:22:51.9290114Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-06T00:22:51.9291158Z env:
+2026-11-06T00:22:51.9291900Z   REPROCASE_REF: nonexistent-ref-xyz-12345
+2026-11-06T00:22:51.9292796Z ##[endgroup]
+2026-11-06T00:22:51.9380631Z Installing ReproCase from github.com/geyutu6755/ReproCase (nonexistent-ref-xyz-12345)
+2026-11-06T00:22:52.1733546Z --branch clone failed; trying SHA checkout
+2026-11-06T00:22:52.1754153Z Cloning into '/home/runner/work/_temp/reprocase-src'...
+2026-11-06T00:22:53.0221765Z ##[error]ReproCase ref 'nonexistent-ref-xyz-12345' not found as a tag, branch or commit SHA in geyutu6755/ReproCase. Available tags: https://github.com/geyutu6755/ReproCase/tags
+2026-11-06T00:22:53.0226198Z ##[error]Process completed with exit code 1.
+2026-11-06T00:22:53.0239096Z ##[end-action id=scan.install;outcome=failure;conclusion=failure;duration_ms=1107]
+2026-11-06T00:22:53.0242831Z ##[start-action display=Install Chromium;id=scan.__run]
+2026-11-06T00:22:53.0249076Z ##[end-action id=scan.__run;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-06T00:22:53.0253583Z ##[start-action display=Run scan;id=scan.scan]
+2026-11-06T00:22:53.0255414Z ##[end-action id=scan.scan;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-06T00:22:53.0258591Z ##[start-action display=Compare with baseline (new-fault gate);id=scan.gate]
+2026-11-06T00:22:53.0265412Z ##[end-action id=scan.gate;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-06T00:22:53.0272292Z ##[start-action display=Final CI decision;id=scan.decision]
+2026-11-06T00:22:53.0314714Z ##[group]Run set -uo pipefail
+2026-11-06T00:22:53.0315270Z [36;1mset -uo pipefail[0m
+2026-11-06T00:22:53.0315617Z [36;1m# Propagate the gate's new-findings output.[0m
+2026-11-06T00:22:53.0315911Z [36;1mNEW=""[0m
+2026-11-06T00:22:53.0316140Z [36;1mecho "new-findings=$NEW" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:53.0316442Z [36;1m[0m
+2026-11-06T00:22:53.0316924Z [36;1mFAIL_ON_NEW=$(echo "$FAIL_ON_NEW_RAW" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')[0m
+2026-11-06T00:22:53.0317440Z [36;1m[0m
+2026-11-06T00:22:53.0317805Z [36;1m# Priority 1: installation or scan environment error (exit 2).[0m
+2026-11-06T00:22:53.0318423Z [36;1mif [ "$INSTALL_CONCLUSION" = "failure" ] || [ "$SCAN_VERDICT" = "error" ]; then[0m
+2026-11-06T00:22:53.0319041Z [36;1m  echo "exit-code=2" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:53.0319534Z [36;1m  echo "Final verdict: error (environment/configuration problem)."[0m
+2026-11-06T00:22:53.0319857Z [36;1m  exit 2[0m
+2026-11-06T00:22:53.0320024Z [36;1mfi[0m
+2026-11-06T00:22:53.0320182Z [36;1m[0m
+2026-11-06T00:22:53.0320433Z [36;1m# Priority 2: baseline gate failed (new findings with fail-on-new=true,[0m
+2026-11-06T00:22:53.0321082Z [36;1m# or compare infrastructure error).[0m
+2026-11-06T00:22:53.0321501Z [36;1mif [ "$HAS_COMPARE" = "true" ] && [ "$GATE_CONCLUSION" = "failure" ]; then[0m
+2026-11-06T00:22:53.0321807Z [36;1m  echo "exit-code=1" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:53.0322129Z [36;1m  echo "Final verdict: gate failed (new findings vs baseline)."[0m
+2026-11-06T00:22:53.0322789Z [36;1m  exit 1[0m
+2026-11-06T00:22:53.0323036Z [36;1mfi[0m
+2026-11-06T00:22:53.0323407Z [36;1m[0m
+2026-11-06T00:22:53.0323649Z [36;1m# Priority 3: scan findings at or above the fail-on threshold.[0m
+2026-11-06T00:22:53.0323957Z [36;1mif [ "$SCAN_VERDICT" = "findings" ]; then[0m
+2026-11-06T00:22:53.0324213Z [36;1m  echo "exit-code=1" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:53.0324868Z [36;1m  echo "Final verdict: findings exist (scan exit $SCAN_EXIT)."[0m
+2026-11-06T00:22:53.0325265Z [36;1m  exit 1[0m
+2026-11-06T00:22:53.0325424Z [36;1mfi[0m
+2026-11-06T00:22:53.0325579Z [36;1m[0m
+2026-11-06T00:22:53.0325750Z [36;1m# Priority 4: all checks passed.[0m
+2026-11-06T00:22:53.0326003Z [36;1mecho "exit-code=0" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T00:22:53.0326588Z [36;1mecho "Final verdict: clean."[0m
+2026-11-06T00:22:53.0327629Z [36;1mexit 0[0m
+2026-11-06T00:22:53.0350542Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-06T00:22:53.0350826Z env:
+2026-11-06T00:22:53.0350997Z   SCAN_VERDICT: 
+2026-11-06T00:22:53.0351165Z   SCAN_EXIT: 
+2026-11-06T00:22:53.0351342Z   GATE_CONCLUSION: skipped
+2026-11-06T00:22:53.0351700Z   INSTALL_CONCLUSION: failure
+2026-11-06T00:22:53.0351997Z   FAIL_ON_NEW_RAW: true
+2026-11-06T00:22:53.0352262Z   HAS_COMPARE: false
+2026-11-06T00:22:53.0352474Z ##[endgroup]
+2026-11-06T00:22:53.0422125Z Final verdict: error (environment/configuration problem).
+2026-11-06T00:22:53.0424294Z ##[error]Process completed with exit code 2.
+2026-11-06T00:22:53.0441356Z ##[end-action id=scan.decision;outcome=failure;conclusion=failure;duration_ms=16]
+2026-11-06T00:22:53.0443149Z ##[start-action display=Publish privacy-stripped report;id=scan.__run_2]
+2026-11-06T00:22:53.0459719Z ##[group]Run set -euo pipefail
+2026-11-06T00:22:53.0459972Z [36;1mset -euo pipefail[0m
+2026-11-06T00:22:53.0460304Z [36;1m# Traces record raw network traffic (incl. unredacted URLs) — private[0m
+2026-11-06T00:22:53.0460732Z [36;1m# evidence, never uploaded. Screenshots are of YOUR site: keep them,[0m
+2026-11-06T00:22:53.0461150Z [36;1m# they belong to you. result.json / report.html / issues.md are[0m
+2026-11-06T00:22:53.0461489Z [36;1m# redacted at source (token/session query params).[0m
+2026-11-06T00:22:53.0461776Z [36;1mif [ -d reprocase-report ]; then[0m
+2026-11-06T00:22:53.0462035Z [36;1m  rm -rf reprocase-report/artifacts/traces[0m
+2026-11-06T00:22:53.0462319Z [36;1m  ls reprocase-report[0m
+2026-11-06T00:22:53.0462563Z [36;1mfi[0m
+2026-11-06T00:22:53.0478175Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-06T00:22:53.0478469Z ##[endgroup]
+2026-11-06T00:22:53.0517690Z ##[end-action id=scan.__run_2;outcome=success;conclusion=success;duration_ms=7]
+2026-11-06T00:22:53.0537661Z ##[start-action display=Run actions/upload-artifact@v4;id=scan.__actions_upload-artifact]
+2026-11-06T00:22:53.1000862Z ##[end-action id=scan.__actions_upload-artifact;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-06T00:22:53.1071817Z ##[group]Run if [ "failure" != "failure" ]; then
+2026-11-06T00:22:53.1072170Z [36;1mif [ "failure" != "failure" ]; then[0m
+2026-11-06T00:22:53.1072433Z [36;1m  echo "::error::Expected failure"; exit 1[0m
+2026-11-06T00:22:53.1072678Z [36;1mfi[0m
+2026-11-06T00:22:53.1091511Z shell: /usr/bin/bash -e {0}
+2026-11-06T00:22:53.1091730Z ##[endgroup]
+2026-11-06T00:22:53.1404979Z Post job cleanup.
+2026-11-06T00:22:53.1409245Z ##[start-action display=Run actions/setup-node@v5;id=__ef41edd0-cb10-46ff-8377-ddcfe78216f1.__actions_setup-node]
+2026-11-06T00:22:53.1463338Z Post job cleanup.
+2026-11-06T00:22:53.2580771Z (node:2250) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-06T00:22:53.2581935Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-06T00:22:53.2764710Z ##[end-action id=__ef41edd0-cb10-46ff-8377-ddcfe78216f1.__actions_setup-node;outcome=success;conclusion=success;duration_ms=135]
+2026-11-06T00:22:53.2866311Z Post job cleanup.
+2026-11-06T00:22:53.3659047Z [command]/usr/bin/git version
+2026-11-06T00:22:53.3702510Z git version 2.56.0
+2026-11-06T00:22:53.3752729Z Temporarily overriding HOME='/home/runner/work/_temp/ed79dd3f-c388-46cf-b32a-1a081044bd2d' before making global git config changes
+2026-11-06T00:22:53.3757725Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-06T00:22:53.3758966Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/reprocase-actions-demo/reprocase-actions-demo
+2026-11-06T00:22:53.3817760Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-06T00:22:53.3834832Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-06T00:22:53.4120413Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-06T00:22:53.4135081Z http.https://github.com/.extraheader
+2026-11-06T00:22:53.4146882Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-06T00:22:53.4181882Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-06T00:22:53.4484758Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-06T00:22:53.4579363Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-06T00:22:53.4911344Z Cleaning up orphan processes
