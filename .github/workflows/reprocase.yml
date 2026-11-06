@@ -17,7 +17,9 @@ jobs:
         with:
           node-version: 22
       - name: Start demo site
-        run: node start-and-wait.mjs
+        run: |
+          node server.mjs site &
+          sleep 3
       - name: ReproCase scan
         id: reproscan
         uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
@@ -63,7 +65,9 @@ jobs:
         with:
           node-version: 22
       - name: Start demo site
-        run: node start-and-wait.mjs
+        run: |
+          node server.mjs site &
+          sleep 3
       # Report-only scan; the NEW-findings gate is what fails this job.
       - name: ReproCase scan (report only)
         uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@release/v0.5.0
@@ -81,7 +85,9 @@ jobs:
       - name: Inject fault
         run: bash setup-fault.sh
       - name: Start site
-        run: node start-and-wait.mjs
+        run: |
+          node server.mjs site &
+          sleep 3
       - name: Scan (fail-on never + fail-on-new true)
         id: scan
         continue-on-error: true
@@ -106,7 +112,9 @@ jobs:
       - name: Inject fault
         run: bash setup-fault.sh
       - name: Start site
-        run: node start-and-wait.mjs
+        run: |
+          node server.mjs site &
+          sleep 3
       - name: Scan (fail-on never + fail-on-new false)
         id: scan
         uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1

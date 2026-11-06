@@ -1,0 +1,765 @@
+{
+  "total_count": 8,
+  "jobs": [
+    {
+      "id": 127615418284,
+      "run_id": 42133407718,
+      "workflow_name": "ReproCase",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/runs/42133407718",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVi46Vs8AAAAdtni_rA",
+      "head_sha": "57b21462b7ac053a038d0bdf2bd396638ed9fd4d",
+      "url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/jobs/127615418284",
+      "html_url": "https://github.com/geyutu6755/reprocase-actions-demo/actions/runs/42133407718/job/127615418284",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-11-05T23:58:47Z",
+      "started_at": "2026-11-05T23:58:48Z",
+      "completed_at": "2026-11-05T23:59:09Z",
+      "name": "scan",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-05T23:58:49Z",
+          "completed_at": "2026-11-05T23:58:51Z"
+        },
+        {
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-05T23:58:51Z",
+          "completed_at": "2026-11-05T23:58:52Z"
+        },
+        {
+          "name": "Run actions/setup-node@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-05T23:58:52Z",
+          "completed_at": "2026-11-05T23:58:52Z"
+        },
+        {
+          "name": "Start demo site",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-05T23:58:52Z",
+          "completed_at": "2026-11-05T23:58:52Z"
+        },
+        {
+          "name": "ReproCase scan",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 5,
+          "started_at": "2026-11-05T23:58:52Z",
+          "completed_at": "2026-11-05T23:59:06Z"
+        },
+        {
+          "name": "Verdict",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-05T23:59:06Z",
+          "completed_at": "2026-11-05T23:59:06Z"
+        },
+        {
+          "name": "Post ReproCase scan",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-05T23:59:06Z",
+          "completed_at": "2026-11-05T23:59:06Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v5",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-05T23:59:06Z",
+          "completed_at": "2026-11-05T23:59:06Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-05T23:59:06Z",
+          "completed_at": "2026-11-05T23:59:06Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-05T23:59:06Z",
+          "completed_at": "2026-11-05T23:59:06Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/check-runs/127615418284",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000001219,
+      "runner_name": "GitHub Actions 1000001219",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 127615418592,
+      "run_id": 42133407718,
+      "workflow_name": "ReproCase",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/runs/42133407718",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVi46Vs8AAAAdtnjA4A",
+      "head_sha": "57b21462b7ac053a038d0bdf2bd396638ed9fd4d",
+      "url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/jobs/127615418592",
+      "html_url": "https://github.com/geyutu6755/reprocase-actions-demo/actions/runs/42133407718/job/127615418592",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-11-05T23:58:47Z",
+      "started_at": "2026-11-05T23:58:49Z",
+      "completed_at": "2026-11-05T23:59:19Z",
+      "name": "ref-tag",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-05T23:58:50Z",
+          "completed_at": "2026-11-05T23:58:51Z"
+        },
+        {
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-05T23:58:51Z",
+          "completed_at": "2026-11-05T23:58:52Z"
+        },
+        {
+          "name": "Run node start-and-wait.mjs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-05T23:58:52Z",
+          "completed_at": "2026-11-05T23:58:53Z"
+        },
+        {
+          "name": "Scan (ref=v0.5.1 tag)",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 4,
+          "started_at": "2026-11-05T23:58:53Z",
+          "completed_at": "2026-11-05T23:59:16Z"
+        },
+        {
+          "name": "Post Scan (ref=v0.5.1 tag)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-05T23:59:16Z",
+          "completed_at": "2026-11-05T23:59:16Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-05T23:59:16Z",
+          "completed_at": "2026-11-05T23:59:16Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-05T23:59:16Z",
+          "completed_at": "2026-11-05T23:59:16Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/check-runs/127615418592",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000001220,
+      "runner_name": "GitHub Actions 1000001220",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 127615418600,
+      "run_id": 42133407718,
+      "workflow_name": "ReproCase",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/runs/42133407718",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVi46Vs8AAAAdtnjA6A",
+      "head_sha": "57b21462b7ac053a038d0bdf2bd396638ed9fd4d",
+      "url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/jobs/127615418600",
+      "html_url": "https://github.com/geyutu6755/reprocase-actions-demo/actions/runs/42133407718/job/127615418600",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-11-05T23:58:47Z",
+      "started_at": "2026-11-05T23:58:48Z",
+      "completed_at": "2026-11-05T23:59:09Z",
+      "name": "compare-gate",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-05T23:58:49Z",
+          "completed_at": "2026-11-05T23:58:51Z"
+        },
+        {
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-05T23:58:51Z",
+          "completed_at": "2026-11-05T23:58:52Z"
+        },
+        {
+          "name": "Run actions/setup-node@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-05T23:58:52Z",
+          "completed_at": "2026-11-05T23:58:53Z"
+        },
+        {
+          "name": "Start demo site",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-05T23:58:53Z",
+          "completed_at": "2026-11-05T23:58:53Z"
+        },
+        {
+          "name": "ReproCase scan (report only)",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 5,
+          "started_at": "2026-11-05T23:58:53Z",
+          "completed_at": "2026-11-05T23:59:07Z"
+        },
+        {
+          "name": "Post ReproCase scan (report only)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-05T23:59:07Z",
+          "completed_at": "2026-11-05T23:59:07Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v5",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-05T23:59:07Z",
+          "completed_at": "2026-11-05T23:59:07Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-05T23:59:07Z",
+          "completed_at": "2026-11-05T23:59:07Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-05T23:59:07Z",
+          "completed_at": "2026-11-05T23:59:07Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/check-runs/127615418600",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000001221,
+      "runner_name": "GitHub Actions 1000001221",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 127615418634,
+      "run_id": 42133407718,
+      "workflow_name": "ReproCase",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/runs/42133407718",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVi46Vs8AAAAdtnjBCg",
+      "head_sha": "57b21462b7ac053a038d0bdf2bd396638ed9fd4d",
+      "url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/jobs/127615418634",
+      "html_url": "https://github.com/geyutu6755/reprocase-actions-demo/actions/runs/42133407718/job/127615418634",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-11-05T23:58:47Z",
+      "started_at": "2026-11-05T23:58:49Z",
+      "completed_at": "2026-11-05T23:59:18Z",
+      "name": "fon-true",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-05T23:58:49Z",
+          "completed_at": "2026-11-05T23:58:50Z"
+        },
+        {
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-05T23:58:50Z",
+          "completed_at": "2026-11-05T23:58:51Z"
+        },
+        {
+          "name": "Inject fault",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-05T23:58:51Z",
+          "completed_at": "2026-11-05T23:58:51Z"
+        },
+        {
+          "name": "Start site",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-05T23:58:51Z",
+          "completed_at": "2026-11-05T23:58:52Z"
+        },
+        {
+          "name": "Scan (fail-on never + fail-on-new true)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-05T23:58:52Z",
+          "completed_at": "2026-11-05T23:59:16Z"
+        },
+        {
+          "name": "Assert gate fired",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 6,
+          "started_at": "2026-11-05T23:59:16Z",
+          "completed_at": "2026-11-05T23:59:16Z"
+        },
+        {
+          "name": "Post Scan (fail-on never + fail-on-new true)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-05T23:59:16Z",
+          "completed_at": "2026-11-05T23:59:16Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-05T23:59:16Z",
+          "completed_at": "2026-11-05T23:59:17Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-05T23:59:17Z",
+          "completed_at": "2026-11-05T23:59:17Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/check-runs/127615418634",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000001223,
+      "runner_name": "GitHub Actions 1000001223",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 127615418663,
+      "run_id": 42133407718,
+      "workflow_name": "ReproCase",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/runs/42133407718",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVi46Vs8AAAAdtnjBJw",
+      "head_sha": "57b21462b7ac053a038d0bdf2bd396638ed9fd4d",
+      "url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/jobs/127615418663",
+      "html_url": "https://github.com/geyutu6755/reprocase-actions-demo/actions/runs/42133407718/job/127615418663",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-05T23:58:47Z",
+      "started_at": "2026-11-05T23:58:49Z",
+      "completed_at": "2026-11-05T23:59:16Z",
+      "name": "scanner-error-is-honest",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-05T23:58:50Z",
+          "completed_at": "2026-11-05T23:58:51Z"
+        },
+        {
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-05T23:58:51Z",
+          "completed_at": "2026-11-05T23:58:53Z"
+        },
+        {
+          "name": "Run actions/setup-node@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-05T23:58:53Z",
+          "completed_at": "2026-11-05T23:58:53Z"
+        },
+        {
+          "name": "ReproCase scan (unreachable target)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-05T23:58:53Z",
+          "completed_at": "2026-11-05T23:59:13Z"
+        },
+        {
+          "name": "Assert honest failure",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-05T23:59:13Z",
+          "completed_at": "2026-11-05T23:59:13Z"
+        },
+        {
+          "name": "Post ReproCase scan (unreachable target)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-05T23:59:13Z",
+          "completed_at": "2026-11-05T23:59:13Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-05T23:59:13Z",
+          "completed_at": "2026-11-05T23:59:13Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-05T23:59:13Z",
+          "completed_at": "2026-11-05T23:59:13Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-05T23:59:13Z",
+          "completed_at": "2026-11-05T23:59:13Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/check-runs/127615418663",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000001222,
+      "runner_name": "GitHub Actions 1000001222",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 127615418750,
+      "run_id": 42133407718,
+      "workflow_name": "ReproCase",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/runs/42133407718",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVi46Vs8AAAAdtnjBfg",
+      "head_sha": "57b21462b7ac053a038d0bdf2bd396638ed9fd4d",
+      "url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/jobs/127615418750",
+      "html_url": "https://github.com/geyutu6755/reprocase-actions-demo/actions/runs/42133407718/job/127615418750",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-11-05T23:58:47Z",
+      "started_at": "2026-11-05T23:58:49Z",
+      "completed_at": "2026-11-05T23:59:13Z",
+      "name": "fon-false",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-05T23:58:50Z",
+          "completed_at": "2026-11-05T23:58:51Z"
+        },
+        {
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-05T23:58:51Z",
+          "completed_at": "2026-11-05T23:58:52Z"
+        },
+        {
+          "name": "Inject fault",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-05T23:58:52Z",
+          "completed_at": "2026-11-05T23:58:52Z"
+        },
+        {
+          "name": "Start site",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-05T23:58:52Z",
+          "completed_at": "2026-11-05T23:58:53Z"
+        },
+        {
+          "name": "Scan (fail-on never + fail-on-new false)",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 5,
+          "started_at": "2026-11-05T23:58:53Z",
+          "completed_at": "2026-11-05T23:59:11Z"
+        },
+        {
+          "name": "Assert gate did not fire",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6,
+          "started_at": "2026-11-05T23:59:11Z",
+          "completed_at": "2026-11-05T23:59:11Z"
+        },
+        {
+          "name": "Post Scan (fail-on never + fail-on-new false)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-05T23:59:11Z",
+          "completed_at": "2026-11-05T23:59:11Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-05T23:59:11Z",
+          "completed_at": "2026-11-05T23:59:11Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-05T23:59:11Z",
+          "completed_at": "2026-11-05T23:59:11Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/check-runs/127615418750",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000001224,
+      "runner_name": "GitHub Actions 1000001224",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 127615418762,
+      "run_id": 42133407718,
+      "workflow_name": "ReproCase",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/runs/42133407718",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVi46Vs8AAAAdtnjBig",
+      "head_sha": "57b21462b7ac053a038d0bdf2bd396638ed9fd4d",
+      "url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/jobs/127615418762",
+      "html_url": "https://github.com/geyutu6755/reprocase-actions-demo/actions/runs/42133407718/job/127615418762",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-11-05T23:58:47Z",
+      "started_at": "2026-11-05T23:58:48Z",
+      "completed_at": "2026-11-05T23:59:08Z",
+      "name": "ref-sha",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-05T23:58:49Z",
+          "completed_at": "2026-11-05T23:58:50Z"
+        },
+        {
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-05T23:58:50Z",
+          "completed_at": "2026-11-05T23:58:51Z"
+        },
+        {
+          "name": "Run node start-and-wait.mjs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-05T23:58:51Z",
+          "completed_at": "2026-11-05T23:58:51Z"
+        },
+        {
+          "name": "Scan (ref=v0.5.1 commit SHA)",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 4,
+          "started_at": "2026-11-05T23:58:51Z",
+          "completed_at": "2026-11-05T23:59:06Z"
+        },
+        {
+          "name": "Post Scan (ref=v0.5.1 commit SHA)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-05T23:59:06Z",
+          "completed_at": "2026-11-05T23:59:06Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-05T23:59:06Z",
+          "completed_at": "2026-11-05T23:59:06Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-05T23:59:06Z",
+          "completed_at": "2026-11-05T23:59:06Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/check-runs/127615418762",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000001225,
+      "runner_name": "GitHub Actions 1000001225",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 127615418812,
+      "run_id": 42133407718,
+      "workflow_name": "ReproCase",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/runs/42133407718",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVi46Vs8AAAAdtnjBvA",
+      "head_sha": "57b21462b7ac053a038d0bdf2bd396638ed9fd4d",
+      "url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/actions/jobs/127615418812",
+      "html_url": "https://github.com/geyutu6755/reprocase-actions-demo/actions/runs/42133407718/job/127615418812",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-05T23:58:47Z",
+      "started_at": "2026-11-05T23:58:48Z",
+      "completed_at": "2026-11-05T23:58:55Z",
+      "name": "ref-invalid",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-05T23:58:49Z",
+          "completed_at": "2026-11-05T23:58:50Z"
+        },
+        {
+          "name": "Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-05T23:58:50Z",
+          "completed_at": "2026-11-05T23:58:51Z"
+        },
+        {
+          "name": "Scan (ref=nonexistent)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-05T23:58:51Z",
+          "completed_at": "2026-11-05T23:58:53Z"
+        },
+        {
+          "name": "Assert error",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-05T23:58:53Z",
+          "completed_at": "2026-11-05T23:58:53Z"
+        },
+        {
+          "name": "Post Scan (ref=nonexistent)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-05T23:58:53Z",
+          "completed_at": "2026-11-05T23:58:53Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-05T23:58:53Z",
+          "completed_at": "2026-11-05T23:58:53Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-05T23:58:53Z",
+          "completed_at": "2026-11-05T23:58:53Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/geyutu6755/reprocase-actions-demo/check-runs/127615418812",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000001226,
+      "runner_name": "GitHub Actions 1000001226",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}
