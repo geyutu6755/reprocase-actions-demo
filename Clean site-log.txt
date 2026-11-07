@@ -1,0 +1,163 @@
+﻿2026-11-07T18:49:29.8906386Z Current runner version: '2.338.2'
+2026-11-07T18:49:29.8932177Z ##[group]Runner Image Provisioner
+2026-11-07T18:49:29.8933208Z Hosted Compute Agent
+2026-11-07T18:49:29.8934249Z Version: 20261028.624
+2026-11-07T18:49:29.8934968Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-07T18:49:29.8935777Z Build Date: 2026-10-28T21:51:42Z
+2026-11-07T18:49:29.8936486Z Worker ID: {ca5dade0-bd02-4ecf-b6b3-00068f2cbba4}
+2026-11-07T18:49:29.8937293Z Region: westus
+2026-11-07T18:49:29.8937859Z Cloud: Azure
+2026-11-07T18:49:29.8938398Z ##[endgroup]
+2026-11-07T18:49:29.8939999Z ##[group]Operating System
+2026-11-07T18:49:29.8940671Z Ubuntu
+2026-11-07T18:49:29.8941270Z 24.04.5
+2026-11-07T18:49:29.8941823Z LTS
+2026-11-07T18:49:29.8942381Z ##[endgroup]
+2026-11-07T18:49:29.8943070Z ##[group]Runner Image
+2026-11-07T18:49:29.8944069Z Image: ubuntu-24.04
+2026-11-07T18:49:29.8944719Z Version: 20261101.360.1
+2026-11-07T18:49:29.8946088Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261101.360/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-07T18:49:29.8947800Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261101.360
+2026-11-07T18:49:29.8948788Z ##[endgroup]
+2026-11-07T18:49:29.8949977Z ##[group]GITHUB_TOKEN Permissions
+2026-11-07T18:49:29.8951837Z Contents: read
+2026-11-07T18:49:29.8952998Z Metadata: read
+2026-11-07T18:49:29.8954034Z ##[endgroup]
+2026-11-07T18:49:29.8956280Z Secret source: Actions
+2026-11-07T18:49:29.8957454Z Cache mode: write
+2026-11-07T18:49:29.8958184Z Prepare workflow directory
+2026-11-07T18:49:29.9367310Z Prepare all required actions
+2026-11-07T18:49:29.9418147Z Getting action download info
+2026-11-07T18:49:30.2776381Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-11-07T18:49:30.3649561Z Download action repository 'actions/setup-node@v5' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-11-07T18:49:30.5589054Z Complete job name: Clean site → green
+2026-11-07T18:49:30.6554796Z ##[group]Run actions/checkout@v5
+2026-11-07T18:49:30.6555789Z with:
+2026-11-07T18:49:30.6556310Z   repository: geyutu6755/reprocase-actions-demo
+2026-11-07T18:49:30.6560408Z   token: ***
+2026-11-07T18:49:30.6560861Z   ssh-strict: true
+2026-11-07T18:49:30.6561310Z   ssh-user: git
+2026-11-07T18:49:30.6561781Z   persist-credentials: true
+2026-11-07T18:49:30.6562300Z   clean: true
+2026-11-07T18:49:30.6562769Z   sparse-checkout-cone-mode: true
+2026-11-07T18:49:30.6563308Z   fetch-depth: 1
+2026-11-07T18:49:30.6564044Z   fetch-tags: false
+2026-11-07T18:49:30.6564520Z   show-progress: true
+2026-11-07T18:49:30.6564985Z   lfs: false
+2026-11-07T18:49:30.6565419Z   submodules: false
+2026-11-07T18:49:30.6565888Z   set-safe-directory: true
+2026-11-07T18:49:30.6566418Z   allow-unsafe-pr-checkout: false
+2026-11-07T18:49:30.6567228Z env:
+2026-11-07T18:49:30.6567684Z   SITE_URL: http://127.0.0.1:4173/
+2026-11-07T18:49:30.6568240Z   REPROCASE_REF: release/v0.6.0
+2026-11-07T18:49:30.6568790Z ##[endgroup]
+2026-11-07T18:49:30.9286604Z Syncing repository: geyutu6755/reprocase-actions-demo
+2026-11-07T18:49:30.9288518Z ##[group]Getting Git version info
+2026-11-07T18:49:30.9289411Z Working directory is '/home/runner/work/reprocase-actions-demo/reprocase-actions-demo'
+2026-11-07T18:49:30.9290890Z [command]/usr/bin/git version
+2026-11-07T18:49:30.9378757Z git version 2.56.0
+2026-11-07T18:49:30.9401669Z ##[endgroup]
+2026-11-07T18:49:30.9419900Z Temporarily overriding HOME='/home/runner/work/_temp/63ebd232-6be1-47cd-ab11-3b03b61c7360' before making global git config changes
+2026-11-07T18:49:30.9423198Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-07T18:49:30.9435417Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/reprocase-actions-demo/reprocase-actions-demo
+2026-11-07T18:49:30.9497198Z Deleting the contents of '/home/runner/work/reprocase-actions-demo/reprocase-actions-demo'
+2026-11-07T18:49:30.9504289Z ##[group]Initializing the repository
+2026-11-07T18:49:30.9511129Z [command]/usr/bin/git init /home/runner/work/reprocase-actions-demo/reprocase-actions-demo
+2026-11-07T18:49:30.9633146Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-07T18:49:30.9635319Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-07T18:49:30.9637258Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-07T18:49:30.9638805Z hint: call:
+2026-11-07T18:49:30.9639544Z hint:
+2026-11-07T18:49:30.9640423Z hint: 	git config --global init.defaultBranch <name>
+2026-11-07T18:49:30.9642791Z hint:
+2026-11-07T18:49:30.9644229Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-07T18:49:30.9645948Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-07T18:49:30.9647316Z hint:
+2026-11-07T18:49:30.9648124Z hint: 	git branch -m <name>
+2026-11-07T18:49:30.9649061Z hint:
+2026-11-07T18:49:30.9650277Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-07T18:49:30.9652743Z Initialized empty Git repository in /home/runner/work/reprocase-actions-demo/reprocase-actions-demo/.git/
+2026-11-07T18:49:30.9660811Z [command]/usr/bin/git remote add origin https://github.com/geyutu6755/reprocase-actions-demo
+2026-11-07T18:49:30.9721620Z ##[endgroup]
+2026-11-07T18:49:30.9723057Z ##[group]Disabling automatic garbage collection
+2026-11-07T18:49:30.9727279Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-07T18:49:30.9776720Z ##[endgroup]
+2026-11-07T18:49:30.9778017Z ##[group]Setting up auth
+2026-11-07T18:49:30.9791279Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-07T18:49:30.9840611Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-07T18:49:31.0310249Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-07T18:49:31.0352570Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-07T18:49:31.0645966Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-07T18:49:31.0680612Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-07T18:49:31.0925393Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-07T18:49:31.0982125Z ##[endgroup]
+2026-11-07T18:49:31.0982967Z ##[group]Fetching the repository
+2026-11-07T18:49:31.0996289Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6e4e0afc7d61c5442d87cc61f26a7654a96a6e88:refs/remotes/origin/main
+2026-11-07T18:49:31.5947915Z From https://github.com/geyutu6755/reprocase-actions-demo
+2026-11-07T18:49:31.5949894Z  * [new ref]         6e4e0afc7d61c5442d87cc61f26a7654a96a6e88 -> origin/main
+2026-11-07T18:49:31.5954207Z ##[endgroup]
+2026-11-07T18:49:31.5956281Z ##[group]Determining the checkout info
+2026-11-07T18:49:31.5959567Z ##[endgroup]
+2026-11-07T18:49:31.5976747Z [command]/usr/bin/git sparse-checkout disable
+2026-11-07T18:49:31.6028640Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-07T18:49:31.6075568Z ##[group]Checking out the ref
+2026-11-07T18:49:31.6080284Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-11-07T18:49:31.6214505Z Switched to a new branch 'main'
+2026-11-07T18:49:31.6218430Z branch 'main' set up to track 'origin/main'.
+2026-11-07T18:49:31.6225271Z ##[endgroup]
+2026-11-07T18:49:31.6275523Z [command]/usr/bin/git log -1 --format=%H
+2026-11-07T18:49:31.6310267Z 6e4e0afc7d61c5442d87cc61f26a7654a96a6e88
+2026-11-07T18:49:31.6699419Z ##[group]Run actions/setup-node@v5
+2026-11-07T18:49:31.6700849Z with:
+2026-11-07T18:49:31.6701665Z   node-version: 22
+2026-11-07T18:49:31.6702560Z   always-auth: false
+2026-11-07T18:49:31.6703675Z   check-latest: false
+2026-11-07T18:49:31.6714627Z   token: ***
+2026-11-07T18:49:31.6715557Z   package-manager-cache: true
+2026-11-07T18:49:31.6716594Z env:
+2026-11-07T18:49:31.6717437Z   SITE_URL: http://127.0.0.1:4173/
+2026-11-07T18:49:31.6718560Z   REPROCASE_REF: release/v0.6.0
+2026-11-07T18:49:31.6719624Z ##[endgroup]
+2026-11-07T18:49:31.8327463Z Found in cache @ /opt/hostedtoolcache/node/22.23.4/x64
+2026-11-07T18:49:31.8333210Z (node:2311) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-07T18:49:31.8338301Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-07T18:49:31.8346000Z ##[group]Environment details
+2026-11-07T18:49:32.2399782Z node: v22.23.4
+2026-11-07T18:49:32.2400601Z npm: 10.9.9
+2026-11-07T18:49:32.2400941Z yarn: 1.22.22
+2026-11-07T18:49:32.2402119Z ##[endgroup]
+2026-11-07T18:49:32.2631641Z ##[group]Run set -euo pipefail
+2026-11-07T18:49:32.2632279Z [36;1mset -euo pipefail[0m
+2026-11-07T18:49:32.2632826Z [36;1mnode server.mjs site &[0m
+2026-11-07T18:49:32.2633855Z [36;1mfor i in $(seq 1 20); do curl -s "$SITE_URL" > /dev/null 2>&1 && break; sleep 0.5; done[0m
+2026-11-07T18:49:32.2634835Z [36;1mreprocase scan --url "$SITE_URL" --out scan-clean --fail-on verified --no-traces --max-pages 10[0m
+2026-11-07T18:49:32.2635861Z [36;1mFINDINGS=$(node -e "const r=require('./scan-clean/result.json');console.log(r.findings.length)")[0m
+2026-11-07T18:49:32.2636642Z [36;1mif [ "$FINDINGS" != "0" ]; then[0m
+2026-11-07T18:49:32.2637279Z [36;1m  echo "::error::Clean site should have 0 findings but got $FINDINGS"[0m
+2026-11-07T18:49:32.2637889Z [36;1m  exit 1[0m
+2026-11-07T18:49:32.2638322Z [36;1mfi[0m
+2026-11-07T18:49:32.2638769Z [36;1mecho "✅ Clean scan: 0 findings"[0m
+2026-11-07T18:49:32.2670909Z shell: /usr/bin/bash -e {0}
+2026-11-07T18:49:32.2671408Z env:
+2026-11-07T18:49:32.2672010Z   SITE_URL: http://127.0.0.1:4173/
+2026-11-07T18:49:32.2672531Z   REPROCASE_REF: release/v0.6.0
+2026-11-07T18:49:32.2673029Z ##[endgroup]
+2026-11-07T18:49:32.3381998Z demo site ready
+2026-11-07T18:49:32.8013163Z /home/runner/work/_temp/87a22a6b-dbe2-4034-8571-5a1cf9919e4a.sh: line 4: reprocase: command not found
+2026-11-07T18:49:37.8024924Z ##[error]Process completed with exit code 127.
+2026-11-07T18:49:37.8186083Z Post job cleanup.
+2026-11-07T18:49:37.9096366Z [command]/usr/bin/git version
+2026-11-07T18:49:37.9174201Z git version 2.56.0
+2026-11-07T18:49:37.9218557Z Temporarily overriding HOME='/home/runner/work/_temp/258096fe-0e61-427b-9e62-df36700bc0dc' before making global git config changes
+2026-11-07T18:49:37.9219772Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-07T18:49:37.9224760Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/reprocase-actions-demo/reprocase-actions-demo
+2026-11-07T18:49:37.9269919Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-07T18:49:37.9316220Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-07T18:49:37.9619647Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-07T18:49:37.9659935Z http.https://github.com/.extraheader
+2026-11-07T18:49:37.9676558Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-07T18:49:37.9725368Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-07T18:49:38.0010238Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-07T18:49:38.0065833Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-07T18:49:38.0465536Z Cleaning up orphan processes
+2026-11-07T18:49:38.0755587Z Terminate orphan process: pid (2343) (node)
