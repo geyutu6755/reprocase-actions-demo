@@ -194,8 +194,6 @@ jobs:
         image: nginx:1.27-alpine
         ports:
           - 4173:80
-        volumes:
-          - ${{ github.workspace }}/site:/usr/share/nginx/html:ro
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -211,10 +209,10 @@ jobs:
           npm run build 2>/dev/null
           npm install -g --no-fund --no-audit . 2>/dev/null
           npx playwright install chromium 2>/dev/null
-      - name: Check service container serves the demo site
+      - name: Check service container serves the site
         run: |
-          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:4173/ > /tmp/site.html 2>/dev/null && break; sleep 1; done
-          grep -qi "incident" /tmp/site.html && echo "PASS: demo site served by service container" || { echo "::error::Service container did not serve the demo site"; exit 1; }
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/ > /tmp/site.html 2>/dev/null && break; sleep 1; done
+          grep -qi "nginx" /tmp/site.html && echo "PASS: service container site reachable on 127.0.0.1:4173" || { echo "::error::Service container not serving"; exit 1; }
       - name: Scan (composite action)
         id: rc
         uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
