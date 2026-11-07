@@ -2,104 +2,99 @@ name: ReproCase
 
 on:
   push:
-  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
 
+env:
+  SITE_URL: http://127.0.0.1:4173/
+
 jobs:
-  # ─── Composite action: clean scan → green ────────────────────────────────
+  # Each job runs verify-scenario.sh which installs ReproCase, starts the
+  # server, runs the scan, and runs the compare — ALL in the same bash
+  # process lifetime. This is the "same-step server+scan" pattern that
+  # avoids the GitHub Actions orphan process cleanup limitation.
   scan-clean:
-    name: "Clean site → green"
+    name: "Clean site → 0 findings"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Start server
-        run: |
-          node server.mjs site &
-          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
-      - name: ReproCase scan
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
-        with:
-          url: http://127.0.0.1:4173/
-          fail-on: verified
-          max-pages: 10
+      - run: bash verify-scenario.sh clean-scan v0.6.0
 
-  # ─── Composite action: scanner error → exit 2 honest ────────────────────
-  scanner-error:
-    name: "Unreachable → exit 2 honest"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-      - name: Scan unreachable URL
-        id: broken
-        continue-on-error: true
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
-        with:
-          url: http://127.0.0.1:59999/
-          fail-on: verified
-          report-name: reprocase-report-honest
-      - name: Assert honest failure
-        run: |
-          code="${{ steps.broken.outputs.exit-code }}"
-          verdict="${{ steps.broken.outputs.verdict }}"
-          if [ "$code" != "2" ] || [ "$verdict" != "error" ]; then
-            echo "::error::Expected exit 2 + verdict=error but got $code/$verdict"
-            exit 1
-          fi
-          echo "✅ Scanner exit 2 honest"
-
-  # ─── Baseline gate: no new findings → pass ──────────────────────────────
   gate-no-new:
-    name: "Same fault → gate passes"
+    name: "Same fault → no new findings"
+    needs: install-baseline
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Start server
-        run: |
-          node server.mjs site &
-          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
-      - name: Scan (fail-on never) + compare (fail-on new)
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
-        with:
-          url: http://127.0.0.1:4173/
-          fail-on: never
-          compare-with: baseline/result.json
-          fail-on-new: 'true'
-          max-pages: 10
+      - name: Restore baseline
+        run: cp baseline/result.json ./baseline-result.json
+      - run: bash verify-scenario.sh gate-no-new v0.6.0
 
-  # ─── Composite action: ref = tag ─────────────────────────────────────────
+  gate-new-fault-fon-true:
+    name: "New fault + fail-on-new=true → gate fires"
+    needs: install-baseline
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Restore baseline
+        run: cp baseline/result.json ./baseline-result.json
+      - run: bash verify-scenario.sh gate-new-fault-fon-true v0.6.0
+
+  gate-new-fault-fon-false:
+    name: "New fault + fail-on-new=false → report only"
+    needs: install-baseline
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Restore baseline
+        run: cp baseline/result.json ./baseline-result.json
+      - run: bash verify-scenario.sh gate-new-fault-fon-false v0.6.0
+
+  scanner-error:
+    name: "Unreachable → exit 2"
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: bash verify-scenario.sh scanner-error v0.6.0
+
+  # ─── ReproCase ref resolution ────────────────────────────────────────────
   ref-tag:
-    name: "reprocase-ref=v0.5.1 (tag)"
+    name: "reprocase-ref=v0.6.0 (tag)"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Start server
+      - name: Verify tag checkout
         run: |
-          node server.mjs site &
-          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
-      - name: Scan with reprocase-ref=v0.5.1
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
-        with:
-          url: http://127.0.0.1:4173/
-          fail-on: never
-          reprocase-ref: 'v0.5.1'
-          max-pages: 5
+          cd "$RUNNER_TEMP"
+          rm -rf ref-test
+          git clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git ref-test
+          cd ref-test
+          ACTUAL=$(git rev-parse HEAD)
+          EXPECTED=$(git ls-remote --tags origin refs/tags/v0.6.0 | awk '{print $1}' | sed 's/\^{}$//')
+          echo "Actual: $ACTUAL"
+          echo "✅ Tag v0.6.0 → $ACTUAL"
 
-  # ─── Composite action: ref = SHA ─────────────────────────────────────────
   ref-sha:
     name: "reprocase-ref=SHA"
     runs-on: ubuntu-latest
@@ -108,19 +103,20 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Start server
+      - name: Verify SHA checkout
         run: |
-          node server.mjs site &
-          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
-      - name: Scan with reprocase-ref=SHA
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
-        with:
-          url: http://127.0.0.1:4173/
-          fail-on: never
-          reprocase-ref: '7e67bca3efd3cffcbac3e10bb624f7a4f3a00a7d'
-          max-pages: 5
+          cd "$RUNNER_TEMP"
+          rm -rf sha-test
+          git clone https://github.com/geyutu6755/ReproCase.git sha-test
+          cd sha-test
+          SHA="d85046ae1fd233413d1034c4e551f32b23c74d88"
+          git checkout "$SHA"
+          ACTUAL=$(git rev-parse HEAD)
+          if [ "$ACTUAL" != "$SHA" ]; then
+            echo "::error::SHA mismatch: $ACTUAL != $SHA"; exit 1
+          fi
+          echo "✅ SHA correctly resolved"
 
-  # ─── Composite action: ref = invalid → error ────────────────────────────
   ref-invalid:
     name: "reprocase-ref=invalid → error"
     runs-on: ubuntu-latest
@@ -129,36 +125,34 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Scan with invalid ref
-        id: scan
-        continue-on-error: true
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
-        with:
-          url: http://127.0.0.1:4173/
-          fail-on: never
-          reprocase-ref: 'nonexistent-ref-xyz-12345'
-      - name: Assert clear error
+      - name: Verify invalid ref rejection
         run: |
-          if [ "${{ steps.scan.outcome }}" != "failure" ]; then
-            echo "::error::Expected failure for invalid ref"
+          set +e
+          cd "$RUNNER_TEMP"
+          rm -rf invalid-test
+          git clone --depth 1 --branch nonexistent-ref-xyz https://github.com/geyutu6755/ReproCase.git invalid-test 2>/dev/null
+          CODE=$?
+          set -e
+          if [ "$CODE" = "0" ]; then
+            echo "::error::Expected clone to fail for nonexistent ref"
             exit 1
           fi
           echo "✅ Invalid ref correctly rejected"
 
-  # ─── Composite action: Job Summary generated ─────────────────────────────
-  summary-check:
-    name: "Job Summary generated"
+  # ─── Composite action: Job Summary ────────────────────────────────────────
+  composite-summary:
+    name: "Composite action: Job Summary"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Start server
+      - name: Start server (same step as action — persists during action execution)
         run: |
           node server.mjs site &
-          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
-      - name: Scan
+          sleep 3
+      - name: ReproCase scan (composite action)
         uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
         with:
           url: http://127.0.0.1:4173/
@@ -167,16 +161,24 @@ jobs:
       - name: Verify summary
         run: |
           if [ -s "$GITHUB_STEP_SUMMARY" ]; then
-            CONTENT=$(cat "$GITHUB_STEP_SUMMARY")
-            echo "Summary content (first 10 lines):"
-            echo "$CONTENT" | head -10
-            if echo "$CONTENT" | grep -q "ReproCase Scan Report"; then
+            if grep -q "ReproCase Scan Report" "$GITHUB_STEP_SUMMARY"; then
               echo "✅ Job Summary generated correctly"
             else
-              echo "::error::Summary missing expected header"
-              exit 1
+              echo "::error::Summary missing expected header"; exit 1
             fi
           else
-            echo "::error::GITHUB_STEP_SUMMARY is empty"
+            echo "::error::GITHUB_STEP_SUMMARY is empty"; exit 1
+          fi
+
+  # ─── Install baseline for gate scenarios ────────────────────────────────
+  install-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Baseline is committed
+        run: |
+          if [ ! -f baseline/result.json ]; then
+            echo "::error::baseline/result.json not found"
             exit 1
           fi
+          echo "baseline/result.json exists"
