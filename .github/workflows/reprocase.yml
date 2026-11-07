@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   clean-scan:
-    name: "1. Clean site"
+    name: "1. Clean scan"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -28,98 +28,155 @@ jobs:
       - name: Start server and scan (same step)
         run: |
           set -euo pipefail
-          REPO_DIR="$GITHUB_WORKSPACE"
-          node "$REPO_DIR/server.mjs" "$REPO_DIR/site" &
-          SERVER_PID=$!
-          for i in $(seq 1 20); do
-            curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break
-            sleep 0.5
-          done
-          curl -s http://127.0.0.1:4173/ > /dev/null || { echo "::error::Server not running"; kill $SERVER_PID; exit 1; }
-          reprocase scan --url http://127.0.0.1:4173/ --out "$REPO_DIR/scan-output" --fail-on verified --no-traces --max-pages 10
-          FINDINGS=$(node -e "const r=require('$REPO_DIR/scan-output/result.json');console.log(r.findings.length)")
+          node "$GITHUB_WORKSPACE/server.mjs" "$GITHUB_WORKSPACE/site" &
+          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
+          reprocase scan --url http://127.0.0.1:4173/ --out "$GITHUB_WORKSPACE/scan-output" --fail-on verified --no-traces --max-pages 10
+          FINDINGS=$(node -e "const r=require('$GITHUB_WORKSPACE/scan-output/result.json');console.log(r.findings.length)")
           echo "Clean scan: $FINDINGS findings"
           if [ "$FINDINGS" != "0" ]; then echo "::error::Expected 0 findings"; exit 1; fi
-          echo "✅ PASS"
-          kill $SERVER_PID 2>/dev/null || true
+          echo "PASS"
+          kill %1 2>/dev/null || true
 
   gate-no-new:
-    name: "2. Same fault → gate passes"
+    name: "2. Same fault, no new"
+    needs: clean-scan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Install ReproCase
-        run: |
-          cd "$RUNNER_TEMP"
-          git clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git rc-src
-          cd rc-src
-          npm ci --no-fund --no-audit
-          npm run build
-          npm install -g --no-fund --no-audit .
-          npx playwright install chromium
+      - name: Install Chromium
+        run: npx playwright install chromium
       - name: Start server, scan, compare (same step)
         run: |
           set -euo pipefail
-          REPO_DIR="$GITHUB_WORKSPACE"
-          node "$REPO_DIR/server.mjs" "$REPO_DIR/site" &
-          SERVER_PID=$!
+          node "$GITHUB_WORKSPACE/server.mjs" "$GITHUB_WORKSPACE/site" &
           for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
-          reprocase scan --url http://127.0.0.1:4173/ --out "$REPO_DIR/scan-gn" --fail-on never --no-traces --max-pages 10
-          reprocase compare "$REPO_DIR/baseline/result.json" "$REPO_DIR/scan-gn/result.json" --out "$REPO_DIR/compare-gn" --fail-on new
-          NEW=$(node -e "const r=require('$REPO_DIR/compare-gn/compare.json');console.log(r.summary.newCount)")
+          reprocase scan --url http://127.0.0.1:4173/ --out "$GITHUB_WORKSPACE/scan-gn" --fail-on never --no-traces --max-pages 10
+          reprocase compare "$GITHUB_WORKSPACE/baseline/result.json" "$GITHUB_WORKSPACE/scan-gn/result.json" --out "$GITHUB_WORKSPACE/compare-gn" --fail-on new
+          NEW=$(node -e "const r=require('$GITHUB_WORKSPACE/compare-gn/compare.json');console.log(r.summary.newCount)")
           echo "New: $NEW"
           if [ "$NEW" != "0" ]; then echo "::error::Expected New=0"; exit 1; fi
-          echo "✅ PASS"
-          kill $SERVER_PID 2>/dev/null || true
+          echo "PASS"
+          kill %1 2>/dev/null || true
 
   gate-fon-true:
-    name: "3. New fault + fail-on-new=true → gate fires"
+    name: "3. New fault, fail-on-new=true"
+    needs: clean-scan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Install ReproCase
-        run: |
-          cd "$RUNNER_TEMP"
-          git clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git rc-src
-          cd rc-src
-          npm ci --no-fund --no-audit
-          npm run build
-          npm install -g --no-fund --no-audit .
-          npx playwright install chromium
+      - name: Install Chromium
+        run: npx playwright install chromium
       - name: Inject fault, start server, scan, compare (same step)
         run: |
           set -euo pipefail
-          REPO_DIR="$GITHUB_WORKSPACE"
-          cat > "$REPO_DIR/site/verify-fault.html" << 'PAGE'
-          <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VF</title></head>
-          <body><p>VF</p><img src="./missing-vf.png" alt="x" width="10" height="10">
-          <script>document.addEventListener("DOMContentLoaded",function(){throw new Error("VerifyBoom: scenario fault")});</script>
-          </body></html>
-          PAGE
-          node -e 'const fs=require("fs");let t=fs.readFileSync(process.argv[1]+"/site/index.html","utf8");t=t.replace("</main>","<p><a href=\"./verify-fault.html\">Verify fault</a></p></main>");fs.writeFileSync(process.argv[1]+"/site/index.html",t)' "$REPO_DIR"
-          node "$REPO_DIR/server.mjs" "$REPO_DIR/site" &
-          SERVER_PID=$!
+          printf '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VF</title></head>\n<body><p>VF</p><img src="./missing-vf.png" alt="x" width="10" height="10">\n<script>document.addEventListener("DOMContentLoaded",function(){throw new Error("VerifyBoom: scenario fault")});</script>\n</body></html>\n' > site/verification-fault.html
+          node -e 'const fs=require("fs");let t=fs.readFileSync("site/index.html","utf8");t=t.replace("</main>","<p><a href=\\"./verification-fault.html\\">Verification fault</a></p></main>");fs.writeFileSync("site/index.html",t)'
+          node "$GITHUB_WORKSPACE/server.mjs" "$GITHUB_WORKSPACE/site" &
           for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
-          reprocase scan --url http://127.0.0.1:4173/ --out "$REPO_DIR/scan-gt" --fail-on never --no-traces --max-pages 15
+          reprocase scan --url http://127.0.0.1:4173/ --out "$GITHUB_WORKSPACE/scan-gt" --fail-on never --no-traces --max-pages 15
           set +e
-          reprocase compare "$REPO_DIR/baseline/result.json" "$REPO_DIR/scan-gt/result.json" --out "$REPO_DIR/compare-gt" --fail-on new
+          reprocase compare "$GITHUB_WORKSPACE/baseline/result.json" "$GITHUB_WORKSPACE/scan-gt/result.json" --out "$GITHUB_WORKSPACE/compare-gt" --fail-on new
           GATE_CODE=$?
           set -e
-          NEW=$(node -e "const r=require('$REPO_DIR/compare-gt/compare.json');console.log(r.summary.newCount)")
-          echo "Gate exit: $GATE_CODE | New: $NEW"
+          NEW=$(node -e "const r=require('$GITHUB_WORKSPACE/compare-gt/compare.json');console.log(r.summary.newCount)")
+          echo "GATE_CODE=$GATE_CODE NEW=$NEW"
           if [ "$GATE_CODE" != "1" ]; then echo "::error::Expected gate exit 1 but got $GATE_CODE"; exit 1; fi
           if [ "$NEW" = "0" ]; then echo "::error::Expected new findings > 0"; exit 1; fi
-          echo "✅ PASS: gate fired, $NEW new finding(s)"
-          kill $SERVER_PID 2>/dev/null || true
+          echo "PASS: $NEW new finding(s), gate FIRED"
+          kill %1 2>/dev/null || true
 
   gate-fon-false:
-    name: "4. New fault + fail-on-new=false → gate passes"
+    name: "4. New fault, fail-on-new=false"
+    needs: clean-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install Chromium
+        run: npx playwright install chromium
+      - name: Inject fault, start server, scan, compare (same step)
+        run: |
+          set -euo pipefail
+          printf '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FF</title></head>\n<body><p>FF</p><img src="./missing-fonf.png" alt="x" width="10" height="10">\n<script>document.addEventListener("DOMContentLoaded",function(){throw new Error("FonFalseBoom: new fault")});</script>\n</body></html>\n' > site/fonf-fault.html
+          node -e 'const fs=require("fs");let t=fs.readFileSync("site/index.html","utf8");t=t.replace("</main>","<p><a href=\\"./fonf-fault.html\\">FonFalse fault</a></p></main>");fs.writeFileSync("site/index.html",t)'
+          node "$GITHUB_WORKSPACE/server.mjs" "$GITHUB_WORKSPACE/site" &
+          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
+          reprocase scan --url http://127.0.0.1:4173/ --out "$GITHUB_WORKSPACE/scan-fonf" --fail-on never --no-traces --max-pages 15
+          reprocase compare "$GITHUB_WORKSPACE/baseline/result.json" "$GITHUB_WORKSPACE/scan-fonf/result.json" --out "$GITHUB_WORKSPACE/compare-fonf"
+          NEW=$(node -e "const r=require('$GITHUB_WORKSPACE/compare-fonf/compare.json');console.log(r.summary.newCount)")
+          echo "NEW=$NEW (reported but gate passed)"
+          if [ "$NEW" = "0" ]; then echo "::error::Expected new findings > 0 in report"; exit 1; fi
+          echo "PASS: fail-on-new=false, gate PASSED"
+          kill %1 2>/dev/null || true
+
+  scanner-error:
+    name: "5. Unreachable"
+    needs: clean-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Scan unreachable (expect exit 2)
+        run: |
+          set +e
+          reprocase scan --url http://127.0.0.1:59999/ --out scan-err --fail-on verified --no-traces
+          CODE=$?
+          set -e
+          if [ "$CODE" != "2" ]; then echo "::error::Expected exit 2 but got $CODE"; exit 1; fi
+          echo "PASS: exit 2 confirmed"
+
+  ref-resolution:
+    name: "6. Ref resolution"
+    needs: clean-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify all ref types
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          rm -rf ref-tag-test
+          git clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git ref-tag-test
+          cd ref-tag-test
+          echo "Tag v0.6.0 OK"
+          cd "$RUNNER_TEMP"
+          rm -rf ref-branch-test
+          git clone --depth 1 --branch main https://github.com/geyutu6755/ReproCase.git ref-branch-test
+          cd ref-branch-test
+          echo "Branch main OK"
+          cd "$RUNNER_TEMP"
+          rm -rf ref-sha-test
+          git clone https://github.com/geyutu6755/ReproCase.git ref-sha-test
+          cd ref-sha-test
+          TARGET="d85046ae1fd233413d1034c4e551f32b23c74d88"
+          git checkout "$TARGET"
+          ACTUAL=$(git rev-parse HEAD)
+          if [ "$ACTUAL" != "$TARGET" ]; then echo "::error::SHA mismatch"; exit 1; fi
+          echo "SHA OK"
+          cd "$RUNNER_TEMP"
+          set +e
+          git clone --depth 1 --branch nonexistent-ref-xyz https://github.com/geyutu6755/ReproCase.git ref-invalid-test 2>/dev/null
+          CODE=$?
+          set -e
+          if [ "$CODE" = "0" ]; then echo "::error::Expected clone to fail"; exit 1; fi
+          echo "Invalid ref OK"
+
+  composite-summary:
+    name: "7. Composite action summary"
+    needs: clean-scan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -135,33 +192,24 @@ jobs:
           npm run build
           npm install -g --no-fund --no-audit .
           npx playwright install chromium
-      - name: Inject fault, start server, scan, compare (same step)
+      - name: Start server and run composite action
         run: |
-          set -euo pipefail
-          REPO_DIR="$GITHUB_WORKSPACE"
-          cat > "$REPO_DIR/site/fonf-fault.html" << 'PAGE'
-          <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FF</title></head>
-          <body><p>FF</p><img src="./missing-fonf.png" alt="x" width="10" height="10">
-          <script>document.addEventListener("DOMContentLoaded",function(){throw new Error("FonFalseBoom: new fault")});</script>
-          </body></html>
-          PAGE
-          node -e 'const fs=require("fs");let t=fs.readFileSync(process.argv[1]+"/site/index.html","utf8");t=t.replace("</main>","<p><a href=\"./fonf-fault.html\">FonFalse fault</a></p></main>");fs.writeFileSync(process.argv[1]+"/site/index.html",t)' "$REPO_DIR"
-          node "$REPO_DIR/server.mjs" "$REPO_DIR/site" &
-          SERVER_PID=$!
+          node "$GITHUB_WORKSPACE/server.mjs" "$GITHUB_WORKSPACE/site" &
           for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
-          reprocase scan --url http://127.0.0.1:4173/ --out "$REPO_DIR/scan-fonf" --fail-on never --no-traces --max-pages 15
-          reprocase compare "$REPO_DIR/baseline/result.json" "$REPO_DIR/scan-fonf/result.json" --out "$REPO_DIR/compare-fonf"
-          NEW=$(node -e "const r=require('$REPO_DIR/compare-fonf/compare.json');console.log(r.summary.newCount)")
-          echo "New findings in report: $NEW"
-          if [ "$NEW" = "0" ]; then echo "::error::Expected new findings > 0 in report"; exit 1; fi
-          echo "✅ PASS: fail-on-new=false, gate PASSED, $NEW new finding(s) reported"
-          kill $SERVER_PID 2>/dev/null || true
-
-  scanner-error:
-    name: "5. Unreachable → exit 2"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - name: ReproCase scan (composite action)
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
         with:
-   
+          url: http://127.0.0.1:4173/
+          fail-on: never
+          max-pages: 10
+      - name: Verify summary
+        run: |
+          if [ -s "$GITHUB_STEP_SUMMARY" ]; then
+            if grep -q "ReproCase Scan Report" "$GITHUB_STEP_SUMMARY"; then
+              echo "Summary OK"
+            else
+              echo "::error::Summary missing header"; exit 1
+            fi
+          else
+            echo "::error::Summary empty"; exit 1
+          fi
