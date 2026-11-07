@@ -27,7 +27,6 @@ jobs:
 
   gate-no-new:
     name: "Same fault → no new findings"
-    needs: install-baseline
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -40,7 +39,6 @@ jobs:
 
   gate-new-fault-fon-true:
     name: "New fault + fail-on-new=true → gate fires"
-    needs: install-baseline
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -53,7 +51,6 @@ jobs:
 
   gate-new-fault-fon-false:
     name: "New fault + fail-on-new=false → report only"
-    needs: install-baseline
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -66,7 +63,6 @@ jobs:
 
   scanner-error:
     name: "Unreachable → exit 2"
-    needs: install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
