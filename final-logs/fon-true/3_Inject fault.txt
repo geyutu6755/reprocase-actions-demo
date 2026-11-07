@@ -1,5 +1,0 @@
-﻿2026-11-06T00:22:50.4586545Z ##[group]Run bash setup-fault.sh
-2026-11-06T00:22:50.4586995Z [36;1mbash setup-fault.sh[0m
-2026-11-06T00:22:50.4606813Z shell: /usr/bin/bash -e {0}
-2026-11-06T00:22:50.4607108Z ##[endgroup]
-2026-11-06T00:22:50.5932473Z fault page injected

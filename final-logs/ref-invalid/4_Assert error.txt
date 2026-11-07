@@ -1,6 +1,0 @@
-﻿2026-11-06T00:22:53.1071804Z ##[group]Run if [ "failure" != "failure" ]; then
-2026-11-06T00:22:53.1072167Z [36;1mif [ "failure" != "failure" ]; then[0m
-2026-11-06T00:22:53.1072430Z [36;1m  echo "::error::Expected failure"; exit 1[0m
-2026-11-06T00:22:53.1072675Z [36;1mfi[0m
-2026-11-06T00:22:53.1091504Z shell: /usr/bin/bash -e {0}
-2026-11-06T00:22:53.1091727Z ##[endgroup]

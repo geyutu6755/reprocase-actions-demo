@@ -22,7 +22,7 @@ jobs:
           sleep 3
       - name: ReproCase scan
         id: reproscan
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
         with:
           url: http://127.0.0.1:4173/
           fail-on: verified
