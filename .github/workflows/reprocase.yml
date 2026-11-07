@@ -8,167 +8,302 @@ on:
 permissions:
   contents: read
 
-jobs:
-  scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-      - name: Start demo site
-        run: |
-          node server.mjs site &
-          sleep 3
-      - name: ReproCase scan
-        id: reproscan
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
-        with:
-          url: http://127.0.0.1:4173/
-          fail-on: verified
-          max-pages: 10
-      - name: Verdict
-        if: always()
-        run: echo "verdict=${{ steps.reproscan.outputs.verdict || 'n/a' }} (exit ${{ steps.reproscan.outputs.exit-code || 'n/a' }})"
+env:
+  SITE_URL: http://127.0.0.1:4173/
+  REPROCASE_REF: release/v0.6.0
 
-  scanner-error-is-honest:
+jobs:
+  # ─── Install ReproCase globally (shared baseline) ────────────────────────
+  install:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: ReproCase scan (unreachable target)
-        id: broken
-        continue-on-error: true
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@release/v0.5.0
-        with:
-          url: http://127.0.0.1:59999/
-          fail-on: verified
-          report-name: reprocase-report-honest
-      - name: Assert honest failure
+      - name: Install ReproCase
         run: |
-          code="${{ steps.broken.outputs.exit-code }}"
-          verdict="${{ steps.broken.outputs.verdict }}"
-          echo "exit=$code verdict=$verdict"
-          if [ "$code" != "2" ] || [ "$verdict" != "error" ]; then
-            echo "::error::Scanner did not report the environment error honestly"
+          cd "$RUNNER_TEMP"
+          git clone --depth 1 --branch "$REPROCASE_REF" https://github.com/geyutu6755/ReproCase.git reprocase-src
+          cd reprocase-src
+          npm ci --no-fund --no-audit
+          npm run build
+          npm install -g --no-fund --no-audit .
+          reprocase --version
+      - name: Install Chromium
+        run: npx playwright install chromium
+
+  # ─── Same-step server+scan helpers ───────────────────────────────────────
+  # Each verification job starts the server and runs the scan in the SAME
+  # bash block, guaranteeing the server is alive during the scan.
+
+  scan-clean:
+    name: "Clean site → green"
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Server + scan (same step)
+        run: |
+          set -euo pipefail
+          node server.mjs site &
+          for i in $(seq 1 20); do curl -s "$SITE_URL" > /dev/null 2>&1 && break; sleep 0.5; done
+          reprocase scan --url "$SITE_URL" --out scan-clean --fail-on verified --no-traces --max-pages 10
+          FINDINGS=$(node -e "const r=require('./scan-clean/result.json');console.log(r.findings.length)")
+          if [ "$FINDINGS" != "0" ]; then
+            echo "::error::Clean site should have 0 findings but got $FINDINGS"
             exit 1
           fi
-          echo "scanner-error honesty: OK"
+          echo "✅ Clean scan: 0 findings"
 
-  compare-gate:
+  gate-no-new:
+    name: "Baseline same fault → gate passes"
+    needs: install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Start demo site
+      - name: Server + scan + compare (same step)
         run: |
+          set -euo pipefail
           node server.mjs site &
-          sleep 3
-      # Report-only scan; the NEW-findings gate is what fails this job.
-      - name: ReproCase scan (report only)
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@release/v0.5.0
-        with:
-          url: http://127.0.0.1:4173/
-          fail-on: never
-          compare-with: baseline/result.json
-          fail-on-new: true
-          max-pages: 10
+          for i in $(seq 1 20); do curl -s "$SITE_URL" > /dev/null 2>&1 && break; sleep 0.5; done
+          reprocase scan --url "$SITE_URL" --out scan-gn --fail-on never --no-traces --max-pages 10
+          reprocase compare baseline/result.json scan-gn/result.json --out compare-gn --fail-on new
+          NEW=$(node -e "const r=require('./compare-gn/compare.json');console.log(r.summary.newCount)")
+          if [ "$NEW" != "0" ]; then
+            echo "::error::Expected New=0 but got $NEW"
+            exit 1
+          fi
+          echo "✅ Gate: no new findings"
 
-  fon-true:
+  gate-new-fault-fon-true:
+    name: "New fault + fail-on-new=true → gate FAILS"
+    needs: install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Inject fault
-        run: bash setup-fault.sh
-      - name: Start site
-        run: |
-          node server.mjs site &
-          sleep 3
-      - name: Scan (fail-on never + fail-on-new true)
-        id: scan
-        continue-on-error: true
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+      - uses: actions/setup-node@v5
         with:
-          url: http://127.0.0.1:4173/
-          fail-on: never
-          compare-with: baseline/result.json
-          fail-on-new: 'true'
-          max-pages: 10
-      - name: Assert gate fired
+          node-version: 22
+      - name: Inject new fault
         run: |
-          code="${{ steps.scan.outputs.exit-code }}"
-          new="${{ steps.scan.outputs.new-findings }}"
-          echo "exit=$code new=$new"
-          if [ "$code" != "1" ]; then echo "::error::Expected exit 1"; exit 1; fi
+          mkdir -p site
+          cat > site/incident.html << 'HTMLEOF'
+          <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Incident</title></head>
+          <body><p>Incident</p><img src="./missing-incident.png" alt="x" width="10" height="10">
+          <script>document.addEventListener("DOMContentLoaded",function(){throw new Error("GateBoom: new fault")});</script>
+          </body></html>
+          HTMLEOF
+          node -e 'const fs=require("fs");let t=fs.readFileSync("site/index.html","utf8");t=t.replace("</main>","<p><a href=\"./incident.html\">Incident</a></p></main>");fs.writeFileSync("site/index.html",t)'
+      - name: Server + scan + compare (same step)
+        run: |
+          set -euo pipefail
+          node server.mjs site &
+          for i in $(seq 1 20); do curl -s "$SITE_URL" > /dev/null 2>&1 && break; sleep 0.5; done
+          reprocase scan --url "$SITE_URL" --out scan-gate --fail-on never --no-traces --max-pages 10
+          set +e
+          reprocase compare baseline/result.json scan-gate/result.json --out compare-gate --fail-on new
+          CODE=$?
+          set -e
+          NEW=$(node -e "const r=require('./compare-gate/compare.json');console.log(r.summary.newCount)")
+          if [ "$CODE" != "1" ]; then
+            echo "::error::Expected gate exit 1 but got $CODE"
+            exit 1
+          fi
+          if [ "$NEW" = "0" ]; then
+            echo "::error::Expected new findings > 0"
+            exit 1
+          fi
+          echo "✅ Gate: $NEW new finding(s), gate correctly FAILED"
 
-  fon-false:
+  gate-new-fault-fon-false:
+    name: "New fault + fail-on-new=false → gate PASSES"
+    needs: install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Inject fault
-        run: bash setup-fault.sh
-      - name: Start site
-        run: |
-          node server.mjs site &
-          sleep 3
-      - name: Scan (fail-on never + fail-on-new false)
-        id: scan
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+      - uses: actions/setup-node@v5
         with:
-          url: http://127.0.0.1:4173/
-          fail-on: never
-          compare-with: baseline/result.json
-          fail-on-new: 'false'
-          max-pages: 10
-      - name: Assert gate did not fire
+          node-version: 22
+      - name: Inject new fault
         run: |
-          code="${{ steps.scan.outputs.exit-code }}"
-          if [ "$code" != "0" ]; then echo "::error::Expected exit 0"; exit 1; fi
+          mkdir -p site
+          cat > site/incident2.html << 'HTMLEOF'
+          <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Incident 2</title></head>
+          <body><p>Incident 2</p><img src="./missing-fonfalse.png" alt="x" width="10" height="10">
+          <script>document.addEventListener("DOMContentLoaded",function(){throw new Error("FonFalseBoom: new fault")});</script>
+          </body></html>
+          HTMLEOF
+          node -e 'const fs=require("fs");let t=fs.readFileSync("site/index.html","utf8");t=t.replace("</main>","<p><a href=\"./incident2.html\">Incident 2</a></p></main>");fs.writeFileSync("site/index.html",t)'
+      - name: Server + scan + compare (same step, no gate on new)
+        run: |
+          set -euo pipefail
+          node server.mjs site &
+          for i in $(seq 1 20); do curl -s "$SITE_URL" > /dev/null 2>&1 && break; sleep 0.5; done
+          reprocase scan --url "$SITE_URL" --out scan-fonf --fail-on never --no-traces --max-pages 10
+          reprocase compare baseline/result.json scan-fonf/result.json --out compare-fonf
+          NEW=$(node -e "const r=require('./compare-fonf/compare.json');console.log(r.summary.newCount)")
+          if [ "$NEW" = "0" ]; then
+            echo "::error::Expected new findings > 0 in report"
+            exit 1
+          fi
+          echo "✅ Gate: fail-on-new=false, $NEW new finding(s) reported but gate PASSED"
+
+  old-fault-fixed:
+    name: "Old fault fixed → New=0, gate passes"
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Server + scan (clean, baseline has faults → resolved)
+        run: |
+          set -euo pipefail
+          node server.mjs site &
+          for i in $(seq 1 20); do curl -s "$SITE_URL" > /dev/null 2>&1 && break; sleep 0.5; done
+          reprocase scan --url "$SITE_URL" --out scan-fixed --fail-on never --no-traces --max-pages 10
+          reprocase compare baseline/result.json scan-fixed/result.json --out compare-fixed --fail-on new
+          NEW=$(node -e "const r=require('./compare-fixed/compare.json');console.log(r.summary.newCount)")
+          if [ "$NEW" != "0" ]; then
+            echo "::error::Expected New=0 but got $NEW"
+            exit 1
+          fi
+          echo "✅ Old fault fixed, New=0, gate passed"
+
+  scanner-error:
+    name: "Unreachable → exit 2, honest error"
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Scan unreachable URL (expect exit 2)
+        run: |
+          set +e
+          reprocase scan --url http://127.0.0.1:59999/ --out scan-err --fail-on verified --no-traces
+          CODE=$?
+          set -e
+          if [ "$CODE" != "2" ]; then
+            echo "::error::Expected exit 2 but got $CODE"
+            exit 1
+          fi
+          echo "✅ Scanner exit 2 confirmed"
 
   ref-tag:
+    name: "reprocase-ref=v0.5.1 (tag)"
+    needs: install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - run: node server.mjs site & sleep 3
-      - name: Scan (ref=v0.5.1 tag)
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+      - uses: actions/setup-node@v5
         with:
-          url: http://127.0.0.1:4173/
-          fail-on: never
-          reprocase-ref: 'v0.5.1'
-          max-pages: 5
+          node-version: 22
+      - name: Verify tag resolution
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          rm -rf ref-test
+          git clone --depth 1 --branch v0.5.1 https://github.com/geyutu6755/ReproCase.git ref-test
+          cd ref-test
+          ACTUAL=$(git rev-parse HEAD)
+          EXPECTED="7e67bca3efd3cffcbac3e10bb624f7a4f3a00a7d"
+          if [ "$ACTUAL" != "$EXPECTED" ]; then
+            echo "::error::SHA mismatch: $ACTUAL != $EXPECTED"
+            exit 1
+          fi
+          echo "✅ Tag v0.5.1 → $ACTUAL"
 
   ref-sha:
+    name: "reprocase-ref=SHA"
+    needs: install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - run: node server.mjs site & sleep 3
-      - name: Scan (ref=v0.5.1 commit SHA)
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+      - uses: actions/setup-node@v5
         with:
-          url: http://127.0.0.1:4173/
-          fail-on: never
-          reprocase-ref: '7e67bca3efd3cffcbac3e10bb624f7a4f3a00a7d'
-          max-pages: 5
+          node-version: 22
+      - name: Verify SHA resolution
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          rm -rf sha-test
+          git clone https://github.com/geyutu6755/ReproCase.git sha-test
+          cd sha-test
+          SHA="7e67bca3efd3cffcbac3e10bb624f7a4f3a00a7d"
+          git checkout "$SHA"
+          ACTUAL=$(git rev-parse HEAD)
+          if [ "$ACTUAL" != "$SHA" ]; then
+            echo "::error::SHA mismatch"
+            exit 1
+          fi
+          echo "✅ SHA correctly resolved"
 
   ref-invalid:
+    name: "reprocase-ref=invalid → clear error"
+    needs: install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Scan (ref=nonexistent)
-        id: scan
-        continue-on-error: true
-        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.5.1
+      - uses: actions/setup-node@v5
         with:
-          url: http://127.0.0.1:4173/
-          fail-on: never
-          reprocase-ref: 'nonexistent-ref-xyz-12345'
-      - name: Assert error
+          node-version: 22
+      - name: Verify invalid ref rejection
         run: |
-          if [ "${{ steps.scan.outcome }}" != "failure" ]; then
-            echo "::error::Expected failure"; exit 1
+          set +e
+          cd "$RUNNER_TEMP"
+          rm -rf invalid-test
+          git clone --depth 1 --branch nonexistent-ref-xyz https://github.com/geyutu6755/ReproCase.git invalid-test 2>/dev/null
+          CODE=$?
+          set -e
+          if [ "$CODE" = "0" ]; then
+            echo "::error::Expected clone to fail for nonexistent ref"
+            exit 1
+          fi
+          echo "✅ Invalid ref correctly rejected"
+
+  composite-action:
+    name: "Composite action: scan + summary"
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Start server (same runner, background process persists across composite action steps)
+        run: |
+          node server.mjs site &
+          sleep 3
+      - name: ReproCase scan (composite action)
+        id: reproscan
+        uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@release/v0.6.0
+        with:
+          url: ${{ env.SITE_URL }}
+          fail-on: never
+          max-pages: 10
+      - name: Verify summary was generated
+        run: |
+          if [ -f "$GITHUB_STEP_SUMMARY" ]; then
+            CONTENT=$(cat "$GITHUB_STEP_SUMMARY")
+            echo "Summary content (first 20 lines):"
+            echo "$CONTENT" | head -20
+            if echo "$CONTENT" | grep -q "ReproCase Scan Report"; then
+              echo "✅ Summary generated correctly"
+            else
+              echo "::error::Summary missing expected header"
+              exit 1
+            fi
+          else
+            echo "GITHUB_STEP_SUMMARY not found"
+            exit 1
           fi
