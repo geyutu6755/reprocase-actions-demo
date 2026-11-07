@@ -7,147 +7,204 @@ on:
 permissions:
   contents: read
 
-env:
-  SITE_URL: http://127.0.0.1:4173/
-
 jobs:
-  # Each job runs verify-scenario.sh which installs ReproCase, starts the
-  # server, runs the scan, and runs the compare — ALL in the same bash
-  # process lifetime. This is the "same-step server+scan" pattern that
-  # avoids the GitHub Actions orphan process cleanup limitation.
-  scan-clean:
-    name: "Clean site → 0 findings"
+  clean-scan:
+    name: "1. Clean site → 0 findings"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - run: bash verify-scenario.sh clean-scan v0.6.0
+      - name: Install, serve, scan
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          rm -rf rc-src
+          git clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git rc-src
+          cd rc-src
+          npm ci --no-fund --no-audit > /dev/null 2>&1
+          npm run build > /dev/null 2>&1
+          npm install -g --no-fund --no-audit . > /dev/null 2>&1
+          npx playwright install chromium > /dev/null 2>&1
+          cd - > /dev/null
+          node server.mjs site &
+          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
+          reprocase scan --url http://127.0.0.1:4173/ --out scan-output --fail-on verified --no-traces --max-pages 10
+          FINDINGS=$(node -e "const r=require('./scan-output/result.json');console.log(r.findings.length)")
+          echo "✅ Clean scan: $FINDINGS findings (expected 0)"
+          if [ "$FINDINGS" != "0" ]; then echo "::error::Expected 0 findings"; exit 1; fi
 
   gate-no-new:
-    name: "Same fault → no new findings"
+    name: "2. Same fault → gate passes"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Restore baseline
-        run: cp baseline/result.json ./baseline-result.json
-      - run: bash verify-scenario.sh gate-no-new v0.6.0
+      - name: Install, serve, scan, compare
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          rm -rf rc-src
+          git clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git rc-src
+          cd rc-src
+          npm ci --no-fund --no-audit > /dev/null 2>&1
+          npm run build > /dev/null 2>&1
+          npm install -g --no-fund --no-audit . > /dev/null 2>&1
+          npx playwright install chromium > /dev/null 2>&1
+          cd - > /dev/null
+          node server.mjs site &
+          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
+          reprocase scan --url http://127.0.0.1:4173/ --out scan-gn --fail-on never --no-traces --max-pages 10
+          reprocase compare baseline/result.json scan-gn/result.json --out compare-gn --fail-on new
+          NEW=$(node -e "const r=require('./compare-gn/compare.json');console.log(r.summary.newCount)")
+          echo "✅ Gate: $NEW new findings (expected 0)"
+          if [ "$NEW" != "0" ]; then echo "::error::Expected New=0"; exit 1; fi
 
-  gate-new-fault-fon-true:
-    name: "New fault + fail-on-new=true → gate fires"
+  gate-fon-true:
+    name: "3. New fault + fail-on-new=true → gate fires"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Restore baseline
-        run: cp baseline/result.json ./baseline-result.json
-      - run: bash verify-scenario.sh gate-new-fault-fon-true v0.6.0
+      - name: Install, serve, scan, compare
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          rm -rf rc-src
+          git clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git rc-src
+          cd rc-src
+          npm ci --no-fund --no-audit > /dev/null 2>&1
+          npm run build > /dev/null 2>&1
+          npm install -g --no-fund --no-audit . > /dev/null 2>&1
+          npx playwright install chromium > /dev/null 2>&1
+          cd - > /dev/null
+          mkdir -p site
+          printf '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VF</title></head>\n<body><p>VF</p><img src="./missing-vf.png" alt="x" width="10" height="10">\n<script>document.addEventListener("DOMContentLoaded",function(){throw new Error("VerifyBoom: scenario fault")});</script>\n</body></html>\n' > site/verification-fault.html
+          node -e 'const fs=require("fs");let t=fs.readFileSync("site/index.html","utf8");t=t.replace("</main>","<p><a href=\"./verification-fault.html\">Verification fault</a></p></main>");fs.writeFileSync("site/index.html",t)'
+          node server.mjs site &
+          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
+          reprocase scan --url http://127.0.0.1:4173/ --out scan-gt --fail-on never --no-traces --max-pages 15
+          set +e
+          reprocase compare baseline/result.json scan-gt/result.json --out compare-gt --fail-on new
+          GATE_CODE=$?
+          set -e
+          NEW=$(node -e "const r=require('./compare-gt/compare.json');console.log(r.summary.newCount)")
+          echo "Gate exit: $GATE_CODE | New: $NEW"
+          if [ "$GATE_CODE" != "1" ]; then echo "::error::Expected gate exit 1 but got $GATE_CODE"; exit 1; fi
+          if [ "$NEW" = "0" ]; then echo "::error::Expected new findings > 0"; exit 1; fi
+          echo "✅ Gate: $NEW new finding(s), gate FIRED (fail-on-new=true)"
 
-  gate-new-fault-fon-false:
-    name: "New fault + fail-on-new=false → report only"
+  gate-fon-false:
+    name: "4. New fault + fail-on-new=false → gate passes"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Restore baseline
-        run: cp baseline/result.json ./baseline-result.json
-      - run: bash verify-scenario.sh gate-new-fault-fon-false v0.6.0
+      - name: Install, serve, scan, compare
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          rm -rf rc-src
+          git clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git rc-src
+          cd rc-src
+          npm ci --no-fund --no-audit > /dev/null 2>&1
+          npm run build > /dev/null 2>&1
+          npm install -g --no-fund --no-audit . > /dev/null 2>&1
+          npx playwright install chromium > /dev/null 2>&1
+          cd - > /dev/null
+          mkdir -p site
+          printf '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FF</title></head>\n<body><p>FF</p><img src="./missing-fonf.png" alt="x" width="10" height="10">\n<script>document.addEventListener("DOMContentLoaded",function(){throw new Error("FonFalseBoom: new fault")});</script>\n</body></html>\n' > site/fonf-fault.html
+          node -e 'const fs=require("fs");let t=fs.readFileSync("site/index.html","utf8");t=t.replace("</main>","<p><a href=\"./fonf-fault.html\">FonFalse fault</a></p></main>");fs.writeFileSync("site/index.html",t)'
+          node server.mjs site &
+          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
+          reprocase scan --url http://127.0.0.1:4173/ --out scan-fonf --fail-on never --no-traces --max-pages 15
+          reprocase compare baseline/result.json scan-fonf/result.json --out compare-fonf
+          NEW=$(node -e "const r=require('./compare-fonf/compare.json');console.log(r.summary.newCount)")
+          echo "✅ Gate: fail-on-new=false, $NEW new finding(s) reported but gate PASSED"
+          if [ "$NEW" = "0" ]; then echo "::error::Expected new findings > 0 in report"; exit 1; fi
 
   scanner-error:
-    name: "Unreachable → exit 2"
+    name: "5. Unreachable → exit 2"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - run: bash verify-scenario.sh scanner-error v0.6.0
-
-  # ─── ReproCase ref resolution ────────────────────────────────────────────
-  ref-tag:
-    name: "reprocase-ref=v0.6.0 (tag)"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-      - name: Verify tag checkout
+      - name: Install and scan unreachable
         run: |
+          set -euo pipefail
           cd "$RUNNER_TEMP"
-          rm -rf ref-test
-          git clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git ref-test
-          cd ref-test
-          ACTUAL=$(git rev-parse HEAD)
-          EXPECTED=$(git ls-remote --tags origin refs/tags/v0.6.0 | awk '{print $1}' | sed 's/\^{}$//')
-          echo "Actual: $ACTUAL"
-          echo "✅ Tag v0.6.0 → $ACTUAL"
+          rm -rf rc-src
+          git clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git rc-src
+          cd rc-src
+          npm ci --no-fund --no-audit > /dev/null 2>&1
+          npm run build > /dev/null 2>&1
+          npm install -g --no-fund --no-audit . > /dev/null 2>&1
+          set +e
+          reprocase scan --url http://127.0.0.1:59999/ --out scan-err --fail-on verified --no-traces
+          CODE=$?
+          set -e
+          if [ "$CODE" != "2" ]; then echo "::error::Expected exit 2 but got $CODE"; exit 1; fi
+          echo "✅ Scanner exit 2 confirmed"
 
-  ref-sha:
-    name: "reprocase-ref=SHA"
+  ref-resolution:
+    name: "6. Ref resolution (tag/branch/SHA/invalid)"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Verify SHA checkout
+      - name: Verify all ref types
         run: |
+          set -euo pipefail
           cd "$RUNNER_TEMP"
-          rm -rf sha-test
-          git clone https://github.com/geyutu6755/ReproCase.git sha-test
-          cd sha-test
+          rm -rf ref-tag-test
+          git clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git ref-tag-test
+          cd ref-tag-test
+          echo "✅ Tag v0.6.0 → $(git rev-parse HEAD | cut -c1-7)"
+          cd "$RUNNER_TEMP"
+          rm -rf ref-branch-test
+          git clone --depth 1 --branch main https://github.com/geyutu6755/ReproCase.git ref-branch-test
+          cd ref-branch-test
+          echo "✅ Branch main → $(git rev-parse HEAD | cut -c1-7)"
+          cd "$RUNNER_TEMP"
+          rm -rf ref-sha-test
+          git clone https://github.com/geyutu6755/ReproCase.git ref-sha-test
+          cd ref-sha-test
           SHA="d85046ae1fd233413d1034c4e551f32b23c74d88"
           git checkout "$SHA"
           ACTUAL=$(git rev-parse HEAD)
-          if [ "$ACTUAL" != "$SHA" ]; then
-            echo "::error::SHA mismatch: $ACTUAL != $SHA"; exit 1
-          fi
-          echo "✅ SHA correctly resolved"
-
-  ref-invalid:
-    name: "reprocase-ref=invalid → error"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-      - name: Verify invalid ref rejection
-        run: |
-          set +e
+          if [ "$ACTUAL" != "$SHA" ]; then echo "::error::SHA mismatch"; exit 1; fi
+          echo "✅ SHA → $ACTUAL"
           cd "$RUNNER_TEMP"
-          rm -rf invalid-test
-          git clone --depth 1 --branch nonexistent-ref-xyz https://github.com/geyutu6755/ReproCase.git invalid-test 2>/dev/null
+          set +e
+          git clone --depth 1 --branch nonexistent-ref-xyz https://github.com/geyutu6755/ReproCase.git ref-invalid-test 2>/dev/null
           CODE=$?
           set -e
-          if [ "$CODE" = "0" ]; then
-            echo "::error::Expected clone to fail for nonexistent ref"
-            exit 1
-          fi
+          if [ "$CODE" = "0" ]; then echo "::error::Expected clone to fail"; exit 1; fi
           echo "✅ Invalid ref correctly rejected"
 
-  # ─── Composite action: Job Summary ────────────────────────────────────────
   composite-summary:
-    name: "Composite action: Job Summary"
+    name: "7. Composite action: Job Summary"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Start server (same step as action — persists during action execution)
+      - name: Start server
         run: |
           node server.mjs site &
-          sleep 3
+          for i in $(seq 1 20); do curl -s http://127.0.0.1:4173/ > /dev/null 2>&1 && break; sleep 0.5; done
       - name: ReproCase scan (composite action)
         uses: geyutu6755/ReproCase/.github/actions/reprocase-scan@v0.6.0
         with:
@@ -160,21 +217,8 @@ jobs:
             if grep -q "ReproCase Scan Report" "$GITHUB_STEP_SUMMARY"; then
               echo "✅ Job Summary generated correctly"
             else
-              echo "::error::Summary missing expected header"; exit 1
+              echo "::error::Summary missing header"; exit 1
             fi
           else
-            echo "::error::GITHUB_STEP_SUMMARY is empty"; exit 1
+            echo "::error::Summary empty"; exit 1
           fi
-
-  # ─── Install baseline for gate scenarios ────────────────────────────────
-  install-baseline:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Baseline is committed
-        run: |
-          if [ ! -f baseline/result.json ]; then
-            echo "::error::baseline/result.json not found"
-            exit 1
-          fi
-          echo "baseline/result.json exists"
