@@ -1,0 +1,206 @@
+﻿2026-11-07T20:48:22.8446146Z Current runner version: '2.338.2'
+2026-11-07T20:48:22.8468136Z ##[group]Runner Image Provisioner
+2026-11-07T20:48:22.8468923Z Hosted Compute Agent
+2026-11-07T20:48:22.8469467Z Version: 20261028.624
+2026-11-07T20:48:22.8469984Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-07T20:48:22.8470665Z Build Date: 2026-10-28T21:51:42Z
+2026-11-07T20:48:22.8471288Z Worker ID: {7defffc7-fc31-45c3-998c-6f710ae5ffcd}
+2026-11-07T20:48:22.8472066Z Region: westus2
+2026-11-07T20:48:22.8472572Z Cloud: Azure
+2026-11-07T20:48:22.8473028Z ##[endgroup]
+2026-11-07T20:48:22.8474332Z ##[group]Operating System
+2026-11-07T20:48:22.8474868Z Ubuntu
+2026-11-07T20:48:22.8475363Z 24.04.5
+2026-11-07T20:48:22.8475852Z LTS
+2026-11-07T20:48:22.8476357Z ##[endgroup]
+2026-11-07T20:48:22.8476870Z ##[group]Runner Image
+2026-11-07T20:48:22.8477428Z Image: ubuntu-24.04
+2026-11-07T20:48:22.8477934Z Version: 20261101.360.1
+2026-11-07T20:48:22.8479044Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261101.360/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-07T20:48:22.8480312Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261101.360
+2026-11-07T20:48:22.8481191Z ##[endgroup]
+2026-11-07T20:48:22.8482308Z ##[group]GITHUB_TOKEN Permissions
+2026-11-07T20:48:22.8483907Z Contents: read
+2026-11-07T20:48:22.8484477Z Metadata: read
+2026-11-07T20:48:22.8484981Z ##[endgroup]
+2026-11-07T20:48:22.8487086Z Secret source: Actions
+2026-11-07T20:48:22.8488316Z Cache mode: write
+2026-11-07T20:48:22.8488912Z Prepare workflow directory
+2026-11-07T20:48:22.8750341Z Prepare all required actions
+2026-11-07T20:48:22.8788933Z Getting action download info
+2026-11-07T20:48:23.1948749Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-11-07T20:48:23.3248216Z Download action repository 'actions/setup-node@v5' (SHA:a0853c24544627f65ddf259abe73b1d18a591444)
+2026-11-07T20:48:23.5915070Z Complete job name: 6. Ref resolution
+2026-11-07T20:48:23.6576722Z ##[group]Run actions/checkout@v5
+2026-11-07T20:48:23.6577402Z with:
+2026-11-07T20:48:23.6577816Z   repository: geyutu6755/reprocase-actions-demo
+2026-11-07T20:48:23.6581126Z   token: ***
+2026-11-07T20:48:23.6581638Z   ssh-strict: true
+2026-11-07T20:48:23.6582017Z   ssh-user: git
+2026-11-07T20:48:23.6582389Z   persist-credentials: true
+2026-11-07T20:48:23.6582790Z   clean: true
+2026-11-07T20:48:23.6583161Z   sparse-checkout-cone-mode: true
+2026-11-07T20:48:23.6583592Z   fetch-depth: 1
+2026-11-07T20:48:23.6583949Z   fetch-tags: false
+2026-11-07T20:48:23.6584316Z   show-progress: true
+2026-11-07T20:48:23.6584685Z   lfs: false
+2026-11-07T20:48:23.6585026Z   submodules: false
+2026-11-07T20:48:23.6585399Z   set-safe-directory: true
+2026-11-07T20:48:23.6585818Z   allow-unsafe-pr-checkout: false
+2026-11-07T20:48:23.6586400Z ##[endgroup]
+2026-11-07T20:48:23.9103744Z Syncing repository: geyutu6755/reprocase-actions-demo
+2026-11-07T20:48:23.9106533Z ##[group]Getting Git version info
+2026-11-07T20:48:23.9107966Z Working directory is '/home/runner/work/reprocase-actions-demo/reprocase-actions-demo'
+2026-11-07T20:48:23.9109665Z [command]/usr/bin/git version
+2026-11-07T20:48:23.9203289Z git version 2.56.0
+2026-11-07T20:48:23.9220565Z ##[endgroup]
+2026-11-07T20:48:23.9238769Z Temporarily overriding HOME='/home/runner/work/_temp/3586452f-94b0-4506-b576-76a308680dc1' before making global git config changes
+2026-11-07T20:48:23.9241100Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-07T20:48:23.9245524Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/reprocase-actions-demo/reprocase-actions-demo
+2026-11-07T20:48:23.9301972Z Deleting the contents of '/home/runner/work/reprocase-actions-demo/reprocase-actions-demo'
+2026-11-07T20:48:23.9308457Z ##[group]Initializing the repository
+2026-11-07T20:48:23.9313231Z [command]/usr/bin/git init /home/runner/work/reprocase-actions-demo/reprocase-actions-demo
+2026-11-07T20:48:23.9420163Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-07T20:48:23.9423560Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-07T20:48:23.9424393Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-07T20:48:23.9425038Z hint: call:
+2026-11-07T20:48:23.9425430Z hint:
+2026-11-07T20:48:23.9426053Z hint: 	git config --global init.defaultBranch <name>
+2026-11-07T20:48:23.9426597Z hint:
+2026-11-07T20:48:23.9427109Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-07T20:48:23.9428102Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-07T20:48:23.9430056Z hint:
+2026-11-07T20:48:23.9430604Z hint: 	git branch -m <name>
+2026-11-07T20:48:23.9431146Z hint:
+2026-11-07T20:48:23.9432258Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-07T20:48:23.9434326Z Initialized empty Git repository in /home/runner/work/reprocase-actions-demo/reprocase-actions-demo/.git/
+2026-11-07T20:48:23.9448222Z [command]/usr/bin/git remote add origin https://github.com/geyutu6755/reprocase-actions-demo
+2026-11-07T20:48:23.9566680Z ##[endgroup]
+2026-11-07T20:48:23.9567774Z ##[group]Disabling automatic garbage collection
+2026-11-07T20:48:23.9569306Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-07T20:48:23.9603648Z ##[endgroup]
+2026-11-07T20:48:23.9604864Z ##[group]Setting up auth
+2026-11-07T20:48:23.9608219Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-07T20:48:23.9641157Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-07T20:48:23.9986185Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-07T20:48:24.0023133Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-07T20:48:24.0225851Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-07T20:48:24.0263449Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-07T20:48:24.0472900Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-07T20:48:24.0516037Z ##[endgroup]
+2026-11-07T20:48:24.0517192Z ##[group]Fetching the repository
+2026-11-07T20:48:24.0527259Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +0fca17966735574da9b61db7a37a5ae723b0594e:refs/remotes/origin/main
+2026-11-07T20:48:24.4055541Z From https://github.com/geyutu6755/reprocase-actions-demo
+2026-11-07T20:48:24.4057275Z  * [new ref]         0fca17966735574da9b61db7a37a5ae723b0594e -> origin/main
+2026-11-07T20:48:24.4060924Z ##[endgroup]
+2026-11-07T20:48:24.4062222Z ##[group]Determining the checkout info
+2026-11-07T20:48:24.4064170Z ##[endgroup]
+2026-11-07T20:48:24.4070833Z [command]/usr/bin/git sparse-checkout disable
+2026-11-07T20:48:24.4124921Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-07T20:48:24.4160224Z ##[group]Checking out the ref
+2026-11-07T20:48:24.4163317Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-11-07T20:48:24.4326444Z Switched to a new branch 'main'
+2026-11-07T20:48:24.4330958Z branch 'main' set up to track 'origin/main'.
+2026-11-07T20:48:24.4335828Z ##[endgroup]
+2026-11-07T20:48:24.4375972Z [command]/usr/bin/git log -1 --format=%H
+2026-11-07T20:48:24.4404452Z 0fca17966735574da9b61db7a37a5ae723b0594e
+2026-11-07T20:48:24.4662281Z ##[group]Run actions/setup-node@v5
+2026-11-07T20:48:24.4662829Z with:
+2026-11-07T20:48:24.4663204Z   node-version: 22
+2026-11-07T20:48:24.4663598Z   always-auth: false
+2026-11-07T20:48:24.4663998Z   check-latest: false
+2026-11-07T20:48:24.4667610Z   token: ***
+2026-11-07T20:48:24.4668019Z   package-manager-cache: true
+2026-11-07T20:48:24.4668464Z ##[endgroup]
+2026-11-07T20:48:24.5909047Z (node:2374) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-07T20:48:24.5910206Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-07T20:48:24.5911851Z Found in cache @ /opt/hostedtoolcache/node/22.23.4/x64
+2026-11-07T20:48:24.5913162Z ##[group]Environment details
+2026-11-07T20:48:24.9306011Z node: v22.23.4
+2026-11-07T20:48:24.9307015Z npm: 10.9.9
+2026-11-07T20:48:24.9307724Z yarn: 1.22.22
+2026-11-07T20:48:24.9309379Z ##[endgroup]
+2026-11-07T20:48:24.9483156Z ##[group]Run set -euo pipefail
+2026-11-07T20:48:24.9484361Z [36;1mset -euo pipefail[0m
+2026-11-07T20:48:24.9485444Z [36;1mcd "$RUNNER_TEMP"[0m
+2026-11-07T20:48:24.9486505Z [36;1mrm -rf ref-tag ref-branch ref-sha[0m
+2026-11-07T20:48:24.9488262Z [36;1mgit clone --depth 1 --branch v0.6.0 https://github.com/geyutu6755/ReproCase.git ref-tag[0m
+2026-11-07T20:48:24.9490047Z [36;1mecho "PASS: tag OK"[0m
+2026-11-07T20:48:24.9491871Z [36;1mgit clone --depth 1 --branch main https://github.com/geyutu6755/ReproCase.git ref-branch[0m
+2026-11-07T20:48:24.9493641Z [36;1mecho "PASS: branch OK"[0m
+2026-11-07T20:48:24.9494998Z [36;1mgit clone https://github.com/geyutu6755/ReproCase.git ref-sha[0m
+2026-11-07T20:48:24.9496420Z [36;1mcd ref-sha[0m
+2026-11-07T20:48:24.9497517Z [36;1mgit checkout d85046ae1fd233413d1034c4e551f32b23c74d88[0m
+2026-11-07T20:48:24.9498843Z [36;1mecho "PASS: SHA OK"[0m
+2026-11-07T20:48:24.9499801Z [36;1mcd "$RUNNER_TEMP"[0m
+2026-11-07T20:48:24.9565327Z [36;1mset +e[0m
+2026-11-07T20:48:24.9567266Z [36;1mgit clone --depth 1 --branch nonexistent-xyz https://github.com/geyutu6755/ReproCase.git ref-invalid[0m
+2026-11-07T20:48:24.9569167Z [36;1mCODE=$?[0m
+2026-11-07T20:48:24.9569980Z [36;1mset -e[0m
+2026-11-07T20:48:24.9571042Z [36;1mif [ "$CODE" = "0" ]; then echo "FAIL: expected error"; exit 1; fi[0m
+2026-11-07T20:48:24.9572613Z [36;1mecho "PASS: invalid rejected"[0m
+2026-11-07T20:48:25.0221886Z shell: /usr/bin/bash -e {0}
+2026-11-07T20:48:25.0222895Z ##[endgroup]
+2026-11-07T20:48:25.0320612Z Cloning into 'ref-tag'...
+2026-11-07T20:48:25.4205495Z warning: refs/tags/v0.6.0 3b95a6d998671b49c8f6859886e5adc3b70a11c1 is not a commit!
+2026-11-07T20:48:25.4208361Z Note: switching to 'd85046ae1fd233413d1034c4e551f32b23c74d88'.
+2026-11-07T20:48:25.4209842Z 
+2026-11-07T20:48:25.4211224Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-07T20:48:25.4214613Z changes and commit them, and you can discard any commits you make in this
+2026-11-07T20:48:25.4217256Z state without impacting any branches by switching back to a branch.
+2026-11-07T20:48:25.4218688Z 
+2026-11-07T20:48:25.4219840Z If you want to create a new branch to retain commits you create, you may
+2026-11-07T20:48:25.4222386Z do so (now or later) by using -c with the switch command. Example:
+2026-11-07T20:48:25.4223765Z 
+2026-11-07T20:48:25.4224397Z   git switch -c <new-branch-name>
+2026-11-07T20:48:25.4225300Z 
+2026-11-07T20:48:25.4225883Z Or undo this operation with:
+2026-11-07T20:48:25.4226693Z 
+2026-11-07T20:48:25.4227160Z   git switch -
+2026-11-07T20:48:25.4227791Z 
+2026-11-07T20:48:25.4229063Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-07T20:48:25.4230653Z 
+2026-11-07T20:48:25.4357533Z PASS: tag OK
+2026-11-07T20:48:25.4369596Z Cloning into 'ref-branch'...
+2026-11-07T20:48:25.8912066Z PASS: branch OK
+2026-11-07T20:48:25.8923425Z Cloning into 'ref-sha'...
+2026-11-07T20:48:26.3893013Z Note: switching to 'd85046ae1fd233413d1034c4e551f32b23c74d88'.
+2026-11-07T20:48:26.3893715Z 
+2026-11-07T20:48:26.3894206Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-07T20:48:26.3895256Z changes and commit them, and you can discard any commits you make in this
+2026-11-07T20:48:26.3896086Z state without impacting any branches by switching back to a branch.
+2026-11-07T20:48:26.3896657Z 
+2026-11-07T20:48:26.3897096Z If you want to create a new branch to retain commits you create, you may
+2026-11-07T20:48:26.3897744Z do so (now or later) by using -c with the switch command. Example:
+2026-11-07T20:48:26.3897992Z 
+2026-11-07T20:48:26.3898184Z   git switch -c <new-branch-name>
+2026-11-07T20:48:26.3898430Z 
+2026-11-07T20:48:26.3898587Z Or undo this operation with:
+2026-11-07T20:48:26.3898860Z 
+2026-11-07T20:48:26.3899017Z   git switch -
+2026-11-07T20:48:26.3899166Z 
+2026-11-07T20:48:26.3899450Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-07T20:48:26.3899740Z 
+2026-11-07T20:48:26.3900671Z HEAD is now at d85046a Merge PR #7: v0.6.0 — reliable CI & developer feedback
+2026-11-07T20:48:26.3901078Z PASS: SHA OK
+2026-11-07T20:48:26.3909982Z Cloning into 'ref-invalid'...
+2026-11-07T20:48:26.6491905Z fatal: Remote branch nonexistent-xyz not found in upstream origin
+2026-11-07T20:48:26.6606013Z PASS: invalid rejected
+2026-11-07T20:48:26.6725697Z Post job cleanup.
+2026-11-07T20:48:26.7713763Z (node:2444) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-07T20:48:26.7714559Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-07T20:48:26.7902731Z Post job cleanup.
+2026-11-07T20:48:26.8617621Z [command]/usr/bin/git version
+2026-11-07T20:48:26.8684437Z git version 2.56.0
+2026-11-07T20:48:26.8714804Z Temporarily overriding HOME='/home/runner/work/_temp/f9b7ce47-5bc7-4f30-b6f2-9795eaf0ef72' before making global git config changes
+2026-11-07T20:48:26.8716230Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-07T20:48:26.8718807Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/reprocase-actions-demo/reprocase-actions-demo
+2026-11-07T20:48:26.8753931Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-07T20:48:26.8786762Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-07T20:48:26.9029810Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-07T20:48:26.9051105Z http.https://github.com/.extraheader
+2026-11-07T20:48:26.9062213Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-07T20:48:26.9098699Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-07T20:48:26.9322991Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-07T20:48:26.9361792Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-07T20:48:26.9697603Z Cleaning up orphan processes
